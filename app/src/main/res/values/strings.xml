@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">EduEase</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="click_to_login">Click to Login</string>
+    <string name="click_to_register">Click to Register</string>
+    <string name="logout">Logout</string>
+    <string name="name">Full Name</string>
+    <string name="phone">Phone</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string-array name="spinner_items">
+        <item>Faculty</item>
+        <item>Student</item>
+        <item>Parent</item>
+        <!-- Add more items as needed -->
+    </string-array>
+
+</resources>
