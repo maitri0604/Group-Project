@@ -1,5 +1,6 @@
 package com.wlu.eduease;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -44,6 +45,8 @@ public class register_teacher extends AppCompatActivity {
 
         final Button btn_register = findViewById(R.id.btn_register);
         final TextView loginNow = findViewById(R.id.loginNow);
+
+
 
         spinner = findViewById(R.id.spinner);
 
@@ -100,8 +103,11 @@ public class register_teacher extends AppCompatActivity {
                                             userRef.child("email").setValue(emailTxt);
                                             userRef.child("phone").setValue(phoneTxt);
                                             userRef.child("role").setValue(selectedRole);
+                                            userRef.child("password").setValue(passwordTxt);
 
                                             Toast.makeText(register_teacher.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(getApplicationContext(), user_login.class);
+                                            startActivity(intent);
                                             finish(); // Finish the activity after successful registration
                                         } else {
                                             Toast.makeText(register_teacher.this, "Failed to authenticate user", Toast.LENGTH_SHORT).show();
@@ -118,6 +124,8 @@ public class register_teacher extends AppCompatActivity {
         loginNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), user_login.class);
+                startActivity(intent);
                 finish();
             }
         });
