@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class register_teacher extends AppCompatActivity {
+public class user_register extends AppCompatActivity {
 
     // Firebase database reference
     DatabaseReference databaseReference;
@@ -32,7 +32,7 @@ public class register_teacher extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_teacher);
+        setContentView(R.layout.activity_user_register);
 
         // Initialize Firebase database reference
         databaseReference = FirebaseDatabase.getInstance().getReference().child("teachers");
@@ -64,12 +64,12 @@ public class register_teacher extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = parent.getItemAtPosition(position).toString();
-                Toast.makeText(register_teacher.this,"Selected:"+selectedItem,Toast.LENGTH_SHORT).show();
+                Toast.makeText(user_register.this,"Selected:"+selectedItem,Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                Toast.makeText(register_teacher.this,"Please Select An Item!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(user_register.this,"Please Select An Item!",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -84,9 +84,9 @@ public class register_teacher extends AppCompatActivity {
                 final String selectedRole = spinner.getSelectedItem().toString();
 
                 if (fullnameTxt.isEmpty() || phoneTxt.isEmpty() || emailTxt.isEmpty() || passwordTxt.isEmpty()) {
-                    Toast.makeText(register_teacher.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(user_register.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
                 } else if (!passwordTxt.equals(conPasswordTxt)) {
-                    Toast.makeText(register_teacher.this, "Password and Confirm Password do not match", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(user_register.this, "Password and Confirm Password do not match", Toast.LENGTH_SHORT).show();
                 } else {
                     FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailTxt, passwordTxt)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -105,14 +105,14 @@ public class register_teacher extends AppCompatActivity {
                                             userRef.child("role").setValue(selectedRole);
                                             userRef.child("password").setValue(passwordTxt);
 
-                                            Toast.makeText(register_teacher.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(user_register.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(getApplicationContext(), user_login.class);
                                             startActivity(intent);
                                         } else {
-                                            Toast.makeText(register_teacher.this, "Failed to authenticate user", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(user_register.this, "Failed to authenticate user", Toast.LENGTH_SHORT).show();
                                         }
                                     } else {
-                                        Toast.makeText(register_teacher.this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(user_register.this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });

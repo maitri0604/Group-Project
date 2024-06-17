@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="15dp"
     android:gravity="center"
-    tools:context=".register_teacher">
+    tools:context=".user_register">
 
 
     <TextView

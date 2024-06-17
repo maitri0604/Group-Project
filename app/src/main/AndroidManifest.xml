@@ -28,7 +28,7 @@
 
         </activity>
         <activity
-            android:name=".register_teacher"
+            android:name=".user_register"
             android:exported="true">
 
         </activity>
