@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:padding="15dp"
     android:gravity="center"
-    tools:context=".user_login">
+    tools:context=".start">
 
     <ImageView
         android:id="@+id/imageView"
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:textSize="22sp"
-        style="@style/CustomLoginButton" />.
+        style="@style/CustomLoginButton" />
 
     <Button
         android:id="@+id/btn_register"
