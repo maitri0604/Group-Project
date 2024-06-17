@@ -2,4 +2,16 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="backgroundColor">#FFFFFF</color>
+    <color name="buttonColor">#007BFF</color>
+    <color name="linkColor">#007BFF</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="grey">#808080</color>
+    <color name="background">#D7CCC8</color>
+    <color name="brown50">#D84315</color>
+    <color name="brown200">#BCAAA4</color>
+
+
 </resources>

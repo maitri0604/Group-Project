@@ -2,7 +2,41 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.EduEase" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorAccent">@color/brown50</item>
+
+    </style>
+    <!-- Custom button style -->
+    <style name="CustomLoginButton" parent="Theme.Material3.DayNight">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:backgroundTint">@color/brown50</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+
+    <style name="CustomRegisterButton" parent="Theme.Material3.DayNight">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:backgroundTint">@color/black</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+
+
+
+
+    <style name="EditTextThemeOverlay" parent="ThemeOverlay.Material3">
+        <item name="colorAccent">@color/brown50</item>
     </style>
 
     <style name="Theme.EduEase" parent="Base.Theme.EduEase" />

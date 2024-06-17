@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@color/backgroundColor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -12,29 +13,41 @@
 
 
     <TextView
+        android:id="@+id/mainLoginText"
         android:text="@string/login"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:textStyle="bold"
         android:gravity="center"
+        android:textColor="@color/black"
         android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:boxStrokeColor="@color/brown50"
+        android:theme="@style/EditTextThemeOverlay">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
             android:hint="@string/email"
+            android:colorAccent="@color/brown50"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:textColor="@color/brown50"
+        app:boxStrokeColor="@color/brown50"
+        app:endIconMode="password_toggle">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
             android:hint="@string/password"
+            android:textColor="@color/black"
+            android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -47,12 +60,15 @@
 
     <RadioGroup
         android:id="@+id/roleGroup"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/radioStudent"
+            android:layout_marginEnd="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Student" />
@@ -73,14 +89,15 @@
     <Button
         android:id="@+id/btn_login"
         android:text="@string/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/CustomLoginButton" />
 
     <TextView
-        android:textStyle="bold"
-        android:textSize="20sp"
         android:gravity="center"
         android:layout_marginTop="20dp"
+        android:textColor="@color/grey"
         android:id="@+id/registerNow"
         android:text="@string/click_to_register"
         android:layout_width="match_parent"

@@ -114,7 +114,7 @@ public class user_login extends AppCompatActivity {
     }
 
     private void validateUserRole(String uid, String selectedRole) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("teachers").child(uid);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users").child(uid);
 
         databaseReference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override

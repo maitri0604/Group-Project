@@ -3,11 +3,10 @@ package com.wlu.eduease;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +26,8 @@ public class user_register extends AppCompatActivity {
     // Firebase database reference
     DatabaseReference databaseReference;
 
-    private Spinner spinner;
+    private RadioGroup radioGroup;
+    private RadioButton radioButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class user_register extends AppCompatActivity {
         setContentView(R.layout.activity_user_register);
 
         // Initialize Firebase database reference
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("teachers");
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
 
         final EditText fullname = findViewById(R.id.fullname);
         final EditText phone = findViewById(R.id.phone);
@@ -46,32 +46,7 @@ public class user_register extends AppCompatActivity {
         final Button btn_register = findViewById(R.id.btn_register);
         final TextView loginNow = findViewById(R.id.loginNow);
 
-
-
-        spinner = findViewById(R.id.spinner);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.spinner_items,
-                android.R.layout.simple_spinner_item
-        );
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = parent.getItemAtPosition(position).toString();
-                Toast.makeText(user_register.this,"Selected:"+selectedItem,Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Toast.makeText(user_register.this,"Please Select An Item!",Toast.LENGTH_SHORT).show();
-            }
-        });
+        radioGroup = findViewById(R.id.radioGroup);
 
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +56,9 @@ public class user_register extends AppCompatActivity {
                 final String emailTxt = email.getText().toString();
                 final String passwordTxt = password.getText().toString();
                 final String conPasswordTxt = conPassword.getText().toString();
-                final String selectedRole = spinner.getSelectedItem().toString();
+                final int selectedId = radioGroup.getCheckedRadioButtonId();
+                radioButton = findViewById(selectedId);
+                final String selectedRole = radioButton.getText().toString();
 
                 if (fullnameTxt.isEmpty() || phoneTxt.isEmpty() || emailTxt.isEmpty() || passwordTxt.isEmpty()) {
                     Toast.makeText(user_register.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
