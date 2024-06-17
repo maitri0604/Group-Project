@@ -108,7 +108,6 @@ public class register_teacher extends AppCompatActivity {
                                             Toast.makeText(register_teacher.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(getApplicationContext(), user_login.class);
                                             startActivity(intent);
-                                            finish(); // Finish the activity after successful registration
                                         } else {
                                             Toast.makeText(register_teacher.this, "Failed to authenticate user", Toast.LENGTH_SHORT).show();
                                         }
