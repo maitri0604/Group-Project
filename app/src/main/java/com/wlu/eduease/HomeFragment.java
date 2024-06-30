@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class HomeFragment extends Fragment {
 
     private FirebaseAuth auth;
-    private Button button;
+
     private TextView textView;
     private FirebaseUser user;
 
@@ -30,7 +30,6 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         auth = FirebaseAuth.getInstance();
-        button = view.findViewById(R.id.btn_logout);
         textView = view.findViewById(R.id.user_details);
         user = auth.getCurrentUser();
 
@@ -42,15 +41,7 @@ public class HomeFragment extends Fragment {
             textView.setText(user.getEmail());
         }
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getActivity(), user_login.class);
-                startActivity(intent);
-                getActivity().finish(); // Optional: finish the current activity if navigating away
-            }
-        });
+
 
         return view;
     }
