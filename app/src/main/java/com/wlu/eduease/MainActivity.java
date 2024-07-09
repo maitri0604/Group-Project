@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView textView;
     private FirebaseUser user;
     private DatabaseReference usersRef; // Reference to users node in Realtime Database
+    private String userRole;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             finish();
         } else {
             // Set user name in navigation drawer header
-            NavigationView navigationView = findViewById(R.id.nav_view);
+            navigationView = findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
             textView = navigationView.getHeaderView(0).findViewById(R.id.user_details);
 
@@ -52,13 +55,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             usersRef = database.getReference("users").child(user.getUid());
 
-            // Retrieve and set full name from database
+            // Retrieve and set full name and user role from database
             usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         String fullName = dataSnapshot.child("fullname").getValue(String.class);
-                        textView.setText("Welcome " + fullName +" !");
+                        userRole = dataSnapshot.child("role").getValue(String.class);
+                        textView.setText("Welcome " + fullName + "!");
+                        updateMenuVisibility(userRole);
+                        loadDefaultFragment(savedInstanceState);
                     }
                 }
 
@@ -80,10 +86,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+    }
 
+    private void loadDefaultFragment(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_home);
+            if ("student".equalsIgnoreCase(userRole)) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudentHome()).commit();
+                navigationView.setCheckedItem(R.id.nav_settings);
+            } else if ("parent".equalsIgnoreCase(userRole)) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParentHome()).commit();
+                navigationView.setCheckedItem(R.id.nav_home);
+            } else if ("faculty".equalsIgnoreCase(userRole)) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FacultyHome()).commit();
+                navigationView.setCheckedItem(R.id.nav_home);
+            }
+        }
+    }
+
+    private void updateMenuVisibility(String role) {
+        Menu menu = navigationView.getMenu();
+        MenuItem studentHome = menu.findItem(R.id.nav_student_home);
+        MenuItem facultyHome = menu.findItem(R.id.nav_faculty_home);
+        MenuItem parentHome = menu.findItem(R.id.nav_parent_home);
+
+        if ("student".equalsIgnoreCase(role)) {
+            studentHome.setVisible(true);
+            facultyHome.setVisible(false);
+            parentHome.setVisible(false);
+        } else if ("faculty".equalsIgnoreCase(role)) {
+            studentHome.setVisible(false);
+            facultyHome.setVisible(true);
+            parentHome.setVisible(false);
+        } else if ("parent".equalsIgnoreCase(role)) {
+            studentHome.setVisible(false);
+            facultyHome.setVisible(false);
+            parentHome.setVisible(true);
         }
     }
 
@@ -91,8 +128,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
 
-        if (itemId == R.id.nav_home) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+        if (itemId == R.id.nav_student_home) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudentHome()).commit();
+        } else if (itemId == R.id.nav_faculty_home) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FacultyHome()).commit();
+        } else if (itemId == R.id.nav_parent_home) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParentHome()).commit();
         } else if (itemId == R.id.nav_settings) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
         } else if (itemId == R.id.nav_about) {
