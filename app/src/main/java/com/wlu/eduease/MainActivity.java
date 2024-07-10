@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // Check if the user data exists in the database
                     if (dataSnapshot.exists()) {
                         String fullName = dataSnapshot.child("fullname").getValue(String.class);
                         userRole = dataSnapshot.child("role").getValue(String.class);
@@ -67,27 +68,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         loadDefaultFragment(savedInstanceState);
                     }
                 }
-
+                // Handle any errors
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     Toast.makeText(MainActivity.this, "Failed to load user data.", Toast.LENGTH_SHORT).show();
                 }
             });
         }
-
+        // Set up Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        // Set up ActionBarDrawerToggle for navigation drawer
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
 
+    // Load default fragment based on user role
     private void loadDefaultFragment(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             if ("student".equalsIgnoreCase(userRole)) {
@@ -103,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    // Update menu visibility based on user role
     private void updateMenuVisibility(String role) {
         Menu menu = navigationView.getMenu();
         MenuItem studentHome = menu.findItem(R.id.nav_student_home);
@@ -124,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    // Handle navigation item selection
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
