@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,17 +28,18 @@ public class StudentHome extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_student, container, false);
 
-        auth = FirebaseAuth.getInstance();
-        textView = view.findViewById(R.id.user_details);
-        user = auth.getCurrentUser();
+        Button btnCourseMaterial = view.findViewById(R.id.btnCourseMaterial);
 
-        if (user == null) {
-            Intent intent = new Intent(getActivity(), user_login.class);
-            startActivity(intent);
-            getActivity().finish(); // Optional: finish the current activity if navigating away
-        } else {
-            textView.setText(user.getEmail());
-        }
+        btnCourseMaterial.setOnClickListener(v -> {
+            // Create the new fragment
+            Courses coursesFragment = new Courses();
+
+            // Replace the current fragment with the new fragment
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, coursesFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
 
         return view;
     }
