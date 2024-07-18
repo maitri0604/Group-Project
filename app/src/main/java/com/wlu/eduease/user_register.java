@@ -2,6 +2,7 @@ package com.wlu.eduease;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,13 +20,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 
 public class user_register extends AppCompatActivity {
 
     // Firebase database reference
     DatabaseReference databaseReference;
+    DatabaseReference studentTuplesRef;
 
     private RadioGroup radioGroup;
     private RadioButton radioButton;
@@ -36,6 +44,7 @@ public class user_register extends AppCompatActivity {
 
         // Initialize Firebase database reference
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+        studentTuplesRef = FirebaseDatabase.getInstance().getReference().child("studentTuples");
 
         final EditText fullname = findViewById(R.id.fullname);
         final EditText phone = findViewById(R.id.phone);
@@ -82,6 +91,11 @@ public class user_register extends AppCompatActivity {
                                             userRef.child("role").setValue(selectedRole);
                                             userRef.child("password").setValue(passwordTxt);
 
+                                            if ("Student".equals(selectedRole)) {
+                                                // Add student to the tuples node in Firebase
+                                                saveStudentTupleToFirebase(fullnameTxt);
+                                            }
+
                                             Toast.makeText(user_register.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(getApplicationContext(), user_login.class);
                                             startActivity(intent);
@@ -105,6 +119,32 @@ public class user_register extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
+    private void saveStudentTupleToFirebase(final String fullname) {
+        studentTuplesRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                long studentCount = mutableData.getChildrenCount(); // Get current count
+                String studentId = String.format("%02d", studentCount + 1); // Generate new ID
+
+                // Create the new student entry
+                MutableData studentData = mutableData.child(studentId);
+                studentData.child("Name").setValue(fullname);
+                studentData.child("StudentId").setValue(studentId);
+
+                return Transaction.success(mutableData); // Transaction success
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean committed, @Nullable DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    Log.e("StudentTupleUpdate", "Error adding student: " + databaseError.getMessage());
+                } else {
+                    Log.d("StudentTupleUpdate", "Successfully added student: " + fullname);
+                }
+            }
+        });
     }
 }
