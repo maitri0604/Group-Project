@@ -29,6 +29,8 @@ public class StudentHome extends Fragment {
         View view = inflater.inflate(R.layout.fragment_student, container, false);
 
         Button btnCourseMaterial = view.findViewById(R.id.btnCourseMaterial);
+        Button btnGrades = view.findViewById(R.id.btnGrades);
+        Button btnTestSchedule = view.findViewById(R.id.btnTestSchedule);
 
         btnCourseMaterial.setOnClickListener(v -> {
             // Create the new fragment
@@ -37,6 +39,29 @@ public class StudentHome extends Fragment {
             // Replace the current fragment with the new fragment
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, coursesFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
+
+        btnGrades.setOnClickListener(v -> {
+            // Create the new fragment
+            StudentMarksFragment studentMarksFragment = new StudentMarksFragment();
+
+            // Replace the current fragment with the new fragment
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, studentMarksFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
+
+
+        btnTestSchedule.setOnClickListener(v -> {
+            // Create the new fragment
+            QuizScheduleFragment quizScheduleFragment = new QuizScheduleFragment();
+
+            // Replace the current fragment with the new fragment
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, quizScheduleFragment);
             transaction.addToBackStack(null);
             transaction.commit();
         });
