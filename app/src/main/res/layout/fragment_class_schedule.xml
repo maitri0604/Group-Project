@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/facultyNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Faculty Name"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/subjectSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/facultyNameText"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/dayTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subjectSpinner"
+        android:layout_marginTop="16dp"
+        android:text="Select Day" />
+
+    <TextView
+        android:id="@+id/timeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dayTextView"
+        android:layout_marginTop="16dp"
+        android:text="Select Time" />
+
+    <EditText
+        android:id="@+id/roomEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/timeTextView"
+        android:layout_marginTop="16dp"
+        android:hint="Room" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/roomEditText"
+        android:layout_marginTop="16dp"
+        android:text="Save" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/scheduleRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/saveButton"
+        android:layout_marginTop="16dp" />
+</RelativeLayout>

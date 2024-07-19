@@ -12,26 +12,26 @@
         android:id="@+id/roleTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
         android:text="Teacher"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp"/>
+        android:textStyle="bold" />
 
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="2"
-        android:rowCount="4"
-        android:alignmentMode="alignMargins"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="16dp"
+        android:alignmentMode="alignMargins"
+        android:columnCount="2"
+        android:rowCount="4">
 
         <Button
             android:id="@+id/btnTestSchedule"
-            android:layout_width="14dp"
-            android:layout_height="109dp"
+            android:layout_width="15dp"
+            android:layout_height="110dp"
             android:layout_row="0"
             android:layout_rowWeight="1"
             android:layout_column="0"
@@ -41,66 +41,66 @@
 
         <Button
             android:id="@+id/btnClassSchedule"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="110dp"
             android:layout_rowWeight="1"
-            android:text="Class Schedule"
-            android:layout_margin="8dp"/>
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:text="Class Schedule" />
 
         <Button
             android:id="@+id/btnCourseMaterial"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
+            android:layout_width="15dp"
+            android:layout_height="110dp"
             android:layout_rowWeight="1"
-            android:text="Course Material"
-            android:layout_margin="8dp"/>
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:text="Course Material" />
 
         <Button
             android:id="@+id/btnTestsQuizzes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
+            android:layout_width="15dp"
+            android:layout_height="110dp"
             android:layout_rowWeight="1"
-            android:text="Tests/Quizzes"
-            android:layout_margin="8dp"/>
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:text="Tests/Quizzes" />
 
         <Button
             android:id="@+id/btnAssignments"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
+            android:layout_width="15dp"
+            android:layout_height="110dp"
             android:layout_rowWeight="1"
-            android:text="Assignments"
-            android:layout_margin="8dp"/>
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:text="Assignments" />
 
         <Button
             android:id="@+id/btnGrades"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
+            android:layout_width="15dp"
+            android:layout_height="110dp"
             android:layout_rowWeight="1"
-            android:text="Grades"
-            android:layout_margin="8dp"/>
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:text="Grades" />
 
         <Button
             android:id="@+id/btnAtRiskStudents"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
+            android:layout_width="15dp"
+            android:layout_height="110dp"
             android:layout_rowWeight="1"
-            android:text="At-Risk Students"
-            android:layout_margin="8dp"/>
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:text="At-Risk Students" />
 
         <Button
             android:id="@+id/btnPTMSchedule"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
+            android:layout_width="15dp"
+            android:layout_height="110dp"
             android:layout_rowWeight="1"
-            android:text="PTM Schedule"
-            android:layout_margin="8dp"/>
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:text="PTM Schedule" />
 
     </GridLayout>
 </LinearLayout>

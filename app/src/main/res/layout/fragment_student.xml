@@ -30,8 +30,8 @@
 
         <Button
             android:id="@+id/btnTestSchedule"
-            android:layout_width="14dp"
-            android:layout_height="109dp"
+                android:layout_width="15dp"
+            android:layout_height="110dp"
             android:layout_row="0"
             android:layout_rowWeight="1"
             android:layout_column="0"
@@ -41,8 +41,8 @@
 
         <Button
             android:id="@+id/btnClassSchedule"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="15dp"
+            android:layout_height="110dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:text="Class Schedule"
@@ -50,8 +50,8 @@
 
         <Button
             android:id="@+id/btnCourseMaterial"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="15dp"
+            android:layout_height="110dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:text="Course Material"
@@ -59,8 +59,8 @@
 
         <Button
             android:id="@+id/btnTestsQuizzes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="15dp"
+            android:layout_height="110dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:text="Tests/Quizzes"
@@ -68,8 +68,8 @@
 
         <Button
             android:id="@+id/btnAssignments"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="15dp"
+            android:layout_height="110dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:text="Assignments"
@@ -77,8 +77,8 @@
 
         <Button
             android:id="@+id/btnGrades"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="15dp"
+            android:layout_height="110dp"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:text="Grades"

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Subject Spinner -->
+        <Spinner
+            android:id="@+id/spinnerSubject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Title EditText -->
+        <EditText
+            android:id="@+id/editTextTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Assignment Title"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Date EditText -->
+        <EditText
+            android:id="@+id/editTextDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Select Date"
+            android:focusable="false"
+            android:clickable="true"
+            android:layout_marginBottom="8dp" />
+
+        <!-- PDF URL EditText -->
+        <EditText
+            android:id="@+id/editTextPdfUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="PDF URL"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Save Assignment Button -->
+        <Button
+            android:id="@+id/buttonSaveAssignment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Assignment" />
+
+        <!-- TableLayout to display assignments -->
+        <TableLayout
+            android:id="@+id/tableLayoutAssignments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="0,1,2,3,4"
+            android:layout_marginTop="16dp">
+        </TableLayout>
+
+    </LinearLayout>
+</ScrollView>

@@ -46,7 +46,6 @@ public class QuizScheduleFragment extends Fragment {
         } else {
             Log.e("QuizScheduleFragment", "No user is logged in");
         }
-
         return view;
     }
 

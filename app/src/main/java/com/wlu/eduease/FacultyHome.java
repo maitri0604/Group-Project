@@ -29,6 +29,8 @@ public class FacultyHome extends Fragment {
         Button btnCourseMaterial = view.findViewById(R.id.btnCourseMaterial);
         Button btnTestsQuizzes = view.findViewById(R.id.btnTestsQuizzes);
         Button btnTestSchedule = view.findViewById(R.id.btnTestSchedule);
+        Button btnClassSchedule = view.findViewById(R.id.btnClassSchedule);
+        Button btnAssignments = view.findViewById(R.id.btnAssignments);
 
         btnCourseMaterial.setOnClickListener(v -> {
             // Create the new fragment
@@ -59,6 +61,28 @@ public class FacultyHome extends Fragment {
             // Replace the current fragment with the new fragment
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, testsAddFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
+
+        btnClassSchedule.setOnClickListener(v -> {
+            // Create the new fragment
+            ClassScheduleFragment classScheduleFragment = new ClassScheduleFragment();
+
+            // Replace the current fragment with the new fragment
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, classScheduleFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
+
+        btnAssignments.setOnClickListener(v -> {
+            // Create the new fragment
+            AssignmentAddFragment assignmentAddFragment = new AssignmentAddFragment();
+
+            // Replace the current fragment with the new fragment
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, assignmentAddFragment);
             transaction.addToBackStack(null);
             transaction.commit();
         });

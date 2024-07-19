@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".StudentScheduleFragment">
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/scheduleCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/calendarView"
+        android:layout_marginTop="16dp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:background="@android:color/white">
+
+            <TextView
+                android:id="@+id/facultyNameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Faculty Name:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/facultyNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/facultyNameLabel"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/subjectLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subject Name:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_below="@id/facultyNameTextView"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/subjectTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/subjectLabel"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
+                android:layout_below="@id/facultyNameTextView"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:id="@+id/timeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_below="@id/subjectTextView"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/timeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/timeLabel"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
+                android:layout_below="@id/subjectTextView"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:id="@+id/roomLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Room:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_below="@id/timeTextView"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/roomTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/roomLabel"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
+                android:layout_below="@id/timeTextView"
+                android:layout_marginTop="4dp" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
