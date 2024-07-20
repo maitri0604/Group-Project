@@ -64,7 +64,7 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_margin="8dp"
-            android:text="Tests/Quizzes" />
+            android:text="Tests/Quizzes Grades" />
 
         <Button
             android:id="@+id/btnAssignments"
@@ -73,7 +73,7 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_margin="8dp"
-            android:text="Assignments" />
+            android:text="Add Assignments" />
 
         <Button
             android:id="@+id/btnGrades"
@@ -82,7 +82,7 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_margin="8dp"
-            android:text="Grades" />
+            android:text="Assignments Grades" />
 
         <Button
             android:id="@+id/btnAtRiskStudents"

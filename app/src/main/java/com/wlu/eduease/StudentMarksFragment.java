@@ -27,6 +27,7 @@ public class StudentMarksFragment extends Fragment {
     private List<String[]> markItemList;
     private RecyclerView.Adapter adapter;
     private DatabaseReference quizzesRef;
+    private DatabaseReference assignmentsRef;
     private DatabaseReference userRef;
     private String currentUserName;
 
@@ -52,11 +53,10 @@ public class StudentMarksFragment extends Fragment {
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 String[] item = markItemList.get(position);
                 TextView quizTitle = holder.itemView.findViewById(R.id.markQuizTitle);
-                TextView studentName = holder.itemView.findViewById(R.id.markStudentName);
                 TextView markValue = holder.itemView.findViewById(R.id.markValue);
 
                 quizTitle.setText(item[0]);
-                studentName.setText(item[1]);
+
                 markValue.setText(item[2]);
             }
 
@@ -69,6 +69,7 @@ public class StudentMarksFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         quizzesRef = FirebaseDatabase.getInstance().getReference("quizzes");
+        assignmentsRef = FirebaseDatabase.getInstance().getReference("assignments");
         userRef = FirebaseDatabase.getInstance().getReference("users");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -104,22 +105,21 @@ public class StudentMarksFragment extends Fragment {
     }
 
     private void loadMarks() {
+        final boolean[] dataFound = {false}; // Use an array to allow modification within inner classes
+
+        // Load quiz marks
         quizzesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 markItemList.clear();
 
-                boolean dataFound = false;
                 for (DataSnapshot quizSnapshot : dataSnapshot.getChildren()) {
                     String quizId = quizSnapshot.getKey();
-                    String date = quizSnapshot.child("date").getValue(String.class);
-                    String subject = quizSnapshot.child("subject").getValue(String.class);
                     String title = quizSnapshot.child("title").getValue(String.class);
 
                     Log.d("StudentMarksFragment", "Quiz ID: " + quizId);
 
                     DataSnapshot marksSnapshot = quizSnapshot.child("marks");
-                    boolean foundMarksForQuiz = false;
                     for (DataSnapshot markSnapshot : marksSnapshot.getChildren()) {
                         String studentName = markSnapshot.getKey();
                         Integer mark = markSnapshot.getValue(Integer.class);
@@ -127,24 +127,51 @@ public class StudentMarksFragment extends Fragment {
                         Log.d("StudentMarksFragment", "Student: " + studentName + ", Mark: " + mark);
 
                         if (studentName.equals(currentUserName)) {
-                            markItemList.add(new String[] { title, studentName, String.valueOf(mark) });
-                            foundMarksForQuiz = true;
-                            dataFound = true;
+                            markItemList.add(new String[]{title, studentName, String.valueOf(mark)});
+                            dataFound[0] = true;
                         }
                     }
+                }
 
-                    if (foundMarksForQuiz) {
-                        Log.d("StudentMarksFragment", "Marks List Updated for Quiz ID: " + quizId);
+                // Load assignment marks
+                assignmentsRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot assignmentSnapshot : dataSnapshot.getChildren()) {
+                            String assignmentId = assignmentSnapshot.getKey();
+                            String title = assignmentSnapshot.child("title").getValue(String.class);
+
+                            Log.d("StudentMarksFragment", "Assignment ID: " + assignmentId);
+
+                            DataSnapshot marksSnapshot = assignmentSnapshot.child("marks");
+                            for (DataSnapshot markSnapshot : marksSnapshot.getChildren()) {
+                                String studentName = markSnapshot.getKey();
+                                Integer mark = markSnapshot.getValue(Integer.class);
+
+                                Log.d("StudentMarksFragment", "Student: " + studentName + ", Mark: " + mark);
+
+                                if (studentName.equals(currentUserName)) {
+                                    markItemList.add(new String[]{title, studentName, String.valueOf(mark)});
+                                    dataFound[0] = true;
+                                }
+                            }
+                        }
+
+                        if (!dataFound[0]) {
+                            showNoDataMessage("No marks found for the current user.");
+                        } else {
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        Log.d("StudentMarksFragment", "Total Marks List Items: " + markItemList.size());
                     }
-                }
 
-                if (!dataFound) {
-                    showNoDataMessage("No marks found for the current user.");
-                } else {
-                    adapter.notifyDataSetChanged();
-                }
-
-                Log.d("StudentMarksFragment", "Total Marks List Items: " + markItemList.size());
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e("StudentMarksFragment", "Failed to load assignment data: " + databaseError.getMessage());
+                        showNoDataMessage("Failed to load assignment data.");
+                    }
+                });
             }
 
             @Override
@@ -157,7 +184,7 @@ public class StudentMarksFragment extends Fragment {
 
     private void showNoDataMessage(String message) {
         markItemList.clear();
-        markItemList.add(new String[] { message, "", "" });
+        markItemList.add(new String[]{message, "", ""});
         adapter.notifyDataSetChanged();
     }
 }

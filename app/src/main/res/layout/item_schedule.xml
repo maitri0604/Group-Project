@@ -7,49 +7,123 @@
     app:cardElevation="4dp"
     app:cardCornerRadius="8dp">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:background="@android:color/white">
 
+        <!-- Faculty Name -->
+        <TextView
+            android:id="@+id/facultyNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Faculty Name:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black" />
+
         <TextView
             android:id="@+id/facultyNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:layout_toEndOf="@id/facultyNameLabel"
+            android:layout_marginStart="8dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_alignParentTop="true" />
+
+        <!-- Subject -->
+        <TextView
+            android:id="@+id/subjectLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Subject:"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:text="Faculty Name" />
+            android:textColor="@android:color/black"
+            android:layout_below="@id/facultyNameTextView"
+            android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/subjectTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/subjectLabel"
+            android:layout_marginStart="8dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
             android:layout_below="@id/facultyNameTextView"
-            android:textSize="14sp" />
+            android:layout_marginTop="8dp" />
+
+        <!-- Day -->
+        <TextView
+            android:id="@+id/dayLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Day:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_below="@id/subjectTextView"
+            android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/dayTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/dayLabel"
+            android:layout_marginStart="8dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
             android:layout_below="@id/subjectTextView"
-            android:textSize="14sp" />
+            android:layout_marginTop="8dp" />
+
+        <!-- Time -->
+        <TextView
+            android:id="@+id/timeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_below="@id/dayTextView"
+            android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/timeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/timeLabel"
+            android:layout_marginStart="8dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
             android:layout_below="@id/dayTextView"
-            android:textSize="14sp" />
+            android:layout_marginTop="8dp" />
+
+        <!-- Room -->
+        <TextView
+            android:id="@+id/roomLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Room:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_below="@id/timeTextView"
+            android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/roomTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/roomLabel"
+            android:layout_marginStart="8dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
             android:layout_below="@id/timeTextView"
-            android:textSize="14sp" />
+            android:layout_marginTop="8dp" />
     </RelativeLayout>
 
-
 </androidx.cardview.widget.CardView>
-

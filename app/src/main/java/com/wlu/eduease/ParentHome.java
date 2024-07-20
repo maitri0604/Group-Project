@@ -1,64 +1,87 @@
 package com.wlu.eduease;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import java.util.Locale;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ParentHome#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ParentHome extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private CalendarView calendarView;
+    private CardView scheduleCardView;
+    private TextView facultyNameTextView;
+    private TextView subjectTextView;
+    private TextView timeTextView;
+    private TextView roomTextView;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private DatabaseReference databaseReference;
 
     public ParentHome() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ParentHome.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ParentHome newInstance(String param1, String param2) {
-        ParentHome fragment = new ParentHome();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_parent, container, false);
+        View view = inflater.inflate(R.layout.fragment_parent, container, false);
+
+        calendarView = view.findViewById(R.id.calendarView);
+        scheduleCardView = view.findViewById(R.id.ptmScheduleCardView);
+        facultyNameTextView = view.findViewById(R.id.facultyNameTextView);
+        subjectTextView = view.findViewById(R.id.subjectTextView);
+        timeTextView = view.findViewById(R.id.timeTextView);
+        roomTextView = view.findViewById(R.id.roomTextView);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("ptm_schedule");
+
+        calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
+            String selectedDate = String.format(Locale.getDefault(), "%d-%02d-%02d", year, month + 1, dayOfMonth);
+            fetchPTMSchedule(selectedDate);
+        });
+
+        return view;
+    }
+
+    private void fetchPTMSchedule(String date) {
+        databaseReference.orderByChild("date").equalTo(date).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot scheduleSnapshot : snapshot.getChildren()) {
+                        String facultyName = scheduleSnapshot.child("faculty_name").getValue(String.class);
+                        String subjectName = scheduleSnapshot.child("subject").getValue(String.class);
+                        String time = scheduleSnapshot.child("time").getValue(String.class);
+                        String room = scheduleSnapshot.child("room_number").getValue(String.class);
+
+                        facultyNameTextView.setText(facultyName);
+                        subjectTextView.setText(subjectName);
+                        timeTextView.setText(time);
+                        roomTextView.setText(room);
+                    }
+                } else {
+                    facultyNameTextView.setText("No Data");
+                    subjectTextView.setText("No Data");
+                    timeTextView.setText("No Data");
+                    roomTextView.setText("No Data");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle possible errors
+            }
+        });
     }
 }
