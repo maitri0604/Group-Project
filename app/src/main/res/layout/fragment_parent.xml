@@ -40,8 +40,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
-
                 <!-- Faculty Name Label and Value -->
                 <TextView
                     android:id="@+id/facultyNameLabel"
@@ -112,6 +110,17 @@
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
+
+        <!-- Button for Grades -->
+        <Button
+            android:id="@+id/gradesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ptmScheduleCardView"
+            android:layout_marginTop="16dp"
+            android:text="View Grades"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 

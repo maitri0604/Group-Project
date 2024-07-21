@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -25,6 +27,7 @@ public class ParentHome extends Fragment {
     private TextView subjectTextView;
     private TextView timeTextView;
     private TextView roomTextView;
+    private Button gradesButton;
 
     private DatabaseReference databaseReference;
 
@@ -43,6 +46,7 @@ public class ParentHome extends Fragment {
         subjectTextView = view.findViewById(R.id.subjectTextView);
         timeTextView = view.findViewById(R.id.timeTextView);
         roomTextView = view.findViewById(R.id.roomTextView);
+        gradesButton = view.findViewById(R.id.gradesButton);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("ptm_schedule");
 
@@ -50,6 +54,8 @@ public class ParentHome extends Fragment {
             String selectedDate = String.format(Locale.getDefault(), "%d-%02d-%02d", year, month + 1, dayOfMonth);
             fetchPTMSchedule(selectedDate);
         });
+
+        gradesButton.setOnClickListener(v -> openGradesFragment());
 
         return view;
     }
@@ -83,5 +89,13 @@ public class ParentHome extends Fragment {
                 // Handle possible errors
             }
         });
+    }
+
+    private void openGradesFragment() {
+        Fragment gradesFragment = new StudentGradesFragment();
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, gradesFragment); // Make sure R.id.fragment_container is the correct ID
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

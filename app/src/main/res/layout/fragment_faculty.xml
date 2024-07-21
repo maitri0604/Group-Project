@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="?android:attr/windowBackground">
 
     <TextView
         android:id="@+id/roleTitle"
@@ -18,89 +19,185 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
-    <GridLayout
-        android:id="@+id/gridLayout"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:alignmentMode="alignMargins"
-        android:columnCount="2"
-        android:rowCount="4">
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
 
-        <Button
-            android:id="@+id/btnTestSchedule"
-            android:layout_width="15dp"
-            android:layout_height="110dp"
-            android:layout_row="0"
-            android:layout_rowWeight="1"
-            android:layout_column="0"
-            android:layout_columnWeight="1"
+        <GridLayout
+            android:id="@+id/gridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Test Schedule" />
+            android:alignmentMode="alignMargins"
+            android:columnCount="2"
+            android:rowCount="4">
 
-        <Button
-            android:id="@+id/btnClassSchedule"
-            android:layout_width="wrap_content"
-            android:layout_height="110dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            android:text="Class Schedule" />
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1">
 
-        <Button
-            android:id="@+id/btnCourseMaterial"
-            android:layout_width="15dp"
-            android:layout_height="110dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            android:text="Course Material" />
+                <Button
+                    android:id="@+id/btnTestSchedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:drawableTop="@drawable/images"
+                    android:padding="16dp"
+                    android:text="Test Schedule"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="?attr/colorPrimary" />
 
-        <Button
-            android:id="@+id/btnTestsQuizzes"
-            android:layout_width="15dp"
-            android:layout_height="110dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            android:text="Tests/Quizzes Grades" />
+            </FrameLayout>
 
-        <Button
-            android:id="@+id/btnAssignments"
-            android:layout_width="15dp"
-            android:layout_height="110dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            android:text="Add Assignments" />
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1">
 
-        <Button
-            android:id="@+id/btnGrades"
-            android:layout_width="15dp"
-            android:layout_height="110dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            android:text="Assignments Grades" />
+                <Button
+                    android:id="@+id/btnClassSchedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="16dp"
+                    android:text="Class Schedule"
+                    android:drawableTop="@drawable/classtime_foreground"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="?attr/colorPrimary" />
 
-        <Button
-            android:id="@+id/btnAtRiskStudents"
-            android:layout_width="15dp"
-            android:layout_height="110dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            android:text="At-Risk Students" />
+            </FrameLayout>
 
-        <Button
-            android:id="@+id/btnPTMSchedule"
-            android:layout_width="15dp"
-            android:layout_height="110dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            android:text="PTM Schedule" />
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1">
 
-    </GridLayout>
+                <Button
+                    android:id="@+id/btnCourseMaterial"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="16dp"
+                    android:text="Course Material"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="?attr/colorPrimary" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1">
+
+                <Button
+                    android:id="@+id/btnTestsQuizzes"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="16dp"
+                    android:text="Tests/Quizzes Grades"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="?attr/colorPrimary" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1">
+
+                <Button
+                    android:id="@+id/btnAssignments"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="16dp"
+                    android:text="Add Assignments"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="?attr/colorPrimary" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1">
+
+                <Button
+                    android:id="@+id/btnGrades"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="16dp"
+                    android:text="Assignments Grades"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="?attr/colorPrimary" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1">
+
+                <Button
+                    android:id="@+id/btnAtRiskStudents"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="16dp"
+                    android:text="At-Risk Students"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="?attr/colorPrimary" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1">
+
+                <Button
+                    android:id="@+id/btnPTMSchedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="16dp"
+                    android:text="PTM Schedule"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="?attr/colorPrimary" />
+
+            </FrameLayout>
+
+        </GridLayout>
+    </androidx.cardview.widget.CardView>
+
 </LinearLayout>
