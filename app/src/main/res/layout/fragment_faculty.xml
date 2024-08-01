@@ -226,6 +226,26 @@
 
             </FrameLayout>
 
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1">
+
+                <Button
+                    android:id="@+id/viewAttendanceButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="16dp"
+                    android:text="@string/viewAttendanceButton"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="?attr/colorPrimary" />
+
+            </FrameLayout>
+
         </GridLayout>
     </androidx.cardview.widget.CardView>
     <FrameLayout

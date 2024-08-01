@@ -88,5 +88,6 @@
     <string name="about_us">À Propos de Nous</string>
     <string name="delete">supprimer</string>
     <string name="add_attendance">Add Attendance</string>
+    <string name="viewAttendanceButton">View Attendance</string>
 
 </resources>

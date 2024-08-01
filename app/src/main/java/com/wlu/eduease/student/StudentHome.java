@@ -30,6 +30,16 @@ public class StudentHome extends Fragment {
         Button btnTestSchedule = view.findViewById(R.id.btnTestSchedule);
         Button btnClassSchedule = view.findViewById(R.id.btnClassSchedule);
         Button btnAssignments = view.findViewById(R.id.btnAssignments);
+        Button viewAttendanceButton = view.findViewById(R.id.viewAttendanceButton);
+
+        viewAttendanceButton.setOnClickListener(v ->  {
+                com.wlu.eduease.parent.ViewAttendanceFragment viewAttendanceFragment = new com.wlu.eduease.parent.ViewAttendanceFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, viewAttendanceFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            });
+
 
         btnCourseMaterial.setOnClickListener(v -> {
             // Create the new fragment

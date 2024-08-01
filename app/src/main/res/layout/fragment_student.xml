@@ -75,4 +75,13 @@
         android:layout_rowWeight="1"
         android:text="@string/grades"
         android:layout_margin="8dp"/>
+    <Button
+        android:id="@+id/viewAttendanceButton"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_margin="8dp"
+        android:text="@string/viewAttendanceButton" />
+
 </LinearLayout>

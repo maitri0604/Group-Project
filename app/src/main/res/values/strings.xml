@@ -89,4 +89,5 @@
     <string name="about_us">About Us</string>
     <string name="delete">delete</string>
     <string name="add_attendance">Add Attendance</string>
+    <string name="viewAttendanceButton">View Attendance</string>
 </resources>

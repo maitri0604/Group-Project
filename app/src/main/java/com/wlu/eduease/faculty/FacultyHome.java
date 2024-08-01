@@ -37,6 +37,8 @@ public class FacultyHome extends Fragment {
         Button btnPTMSchedule = view.findViewById(R.id.btnPTMSchedule);
         Button atRiskButton = view.findViewById(R.id.btnAtRiskStudents);
         Button btnAttendance = view.findViewById(R.id.addAttendanceButton);
+        Button viewAttendanceButton = view.findViewById(R.id.viewAttendanceButton);
+
         btnAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,6 +50,16 @@ public class FacultyHome extends Fragment {
             }
         });
 
+        viewAttendanceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                com.wlu.eduease.parent.ViewAttendanceFragment viewAttendanceFragment = new com.wlu.eduease.parent.ViewAttendanceFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, viewAttendanceFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
         atRiskButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AtRiskStudent.class);

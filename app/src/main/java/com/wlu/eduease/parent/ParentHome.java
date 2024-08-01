@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.wlu.eduease.R;
+import com.wlu.eduease.faculty.AddAttendanceFragment;
 import com.wlu.eduease.faculty.AtRiskStudent;
 
 import java.util.Locale;
@@ -31,7 +32,7 @@ public class ParentHome extends Fragment {
     private TextView subjectTextView;
     private TextView timeTextView;
     private TextView roomTextView;
-    private Button gradesButton,atRiskButton;
+    private Button gradesButton,atRiskButton,viewAttendanceButton;
 
     private DatabaseReference databaseReference;
 
@@ -52,6 +53,19 @@ public class ParentHome extends Fragment {
         roomTextView = view.findViewById(R.id.roomTextView);
         gradesButton = view.findViewById(R.id.gradesButton);
         atRiskButton = view.findViewById(R.id.btnAtRiskStudents);
+        viewAttendanceButton = view.findViewById(R.id.viewAttendanceButton);
+
+        viewAttendanceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                com.wlu.eduease.parent.ViewAttendanceFragment viewAttendanceFragment = new com.wlu.eduease.parent.ViewAttendanceFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, viewAttendanceFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
         atRiskButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AtRiskStudent.class);
             startActivity(intent);

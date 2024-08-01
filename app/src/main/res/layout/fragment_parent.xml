@@ -150,6 +150,19 @@
                 android:textColor="@android:color/white"
                 android:backgroundTint="?attr/colorPrimary" />
 
+            <Button
+                android:id="@+id/viewAttendanceButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/btnAtRiskStudents"
+                android:layout_gravity="center"
+                android:padding="16dp"
+                android:text="@string/viewAttendanceButton"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:backgroundTint="?attr/colorPrimary" />
+
         </RelativeLayout>
 
     </ScrollView>
