@@ -23,6 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DatabaseReference usersRef; // Reference to users node in Realtime Database
     private String userRole;
     private NavigationView navigationView;
+    private DatabaseReference databaseReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+
+
+        // Initialize Firebase Database reference
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        // Start migration
+        startMigration();
+
     }
 
     // Load default fragment based on user role
@@ -162,5 +176,91 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+    }
+
+
+    // save data in new tuple students ;
+
+    private void startMigration() {
+        migrateData();
+    }
+
+    private void migrateData() {
+        DatabaseReference assignmentsRef = databaseReference.child("assignments");
+        DatabaseReference quizzesRef = databaseReference.child("quizzes");
+
+        // Read assignments data
+        assignmentsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot assignmentSnapshot : dataSnapshot.getChildren()) {
+                    String assignmentId = assignmentSnapshot.getKey();
+                    String date = assignmentSnapshot.child("date").getValue(String.class);
+                    String pdfUrl = assignmentSnapshot.child("pdfUrl").getValue(String.class);
+                    String subject = assignmentSnapshot.child("subject").getValue(String.class);
+                    String title = assignmentSnapshot.child("title").getValue(String.class);
+
+                    DataSnapshot marksSnapshot = assignmentSnapshot.child("marks");
+                    for (DataSnapshot studentSnapshot : marksSnapshot.getChildren()) {
+                        String studentId = studentSnapshot.getKey();
+                        int marks = studentSnapshot.getValue(Integer.class);
+                        saveAssignment(studentId, assignmentId, date, marks, pdfUrl, subject, title);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle possible errors.
+            }
+        });
+
+        // Read quizzes data
+        quizzesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot quizSnapshot : dataSnapshot.getChildren()) {
+                    String quizId = quizSnapshot.getKey();
+                    String date = quizSnapshot.child("date").getValue(String.class);
+                    String pdfUrl = quizSnapshot.child("pdfUrl").getValue(String.class);
+                    String subject = quizSnapshot.child("subject").getValue(String.class);
+                    String title = quizSnapshot.child("title").getValue(String.class);
+
+                    DataSnapshot marksSnapshot = quizSnapshot.child("marks");
+                    for (DataSnapshot studentSnapshot : marksSnapshot.getChildren()) {
+                        String studentId = studentSnapshot.getKey();
+                        int marks = studentSnapshot.getValue(Integer.class);
+                        saveQuiz(studentId, quizId, date, marks, pdfUrl, subject, title);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle possible errors.
+            }
+        });
+    }
+
+    private void saveAssignment(String studentId, String assignmentId, String date, int marks, String pdfUrl, String subject, String title) {
+        Map<String, Object> assignmentData = new HashMap<>();
+        assignmentData.put("date", date);
+        assignmentData.put("marks", marks);
+        assignmentData.put("pdfUrl", pdfUrl);
+        assignmentData.put("subject", subject);
+        assignmentData.put("title", title);
+
+        databaseReference.child("students").child(studentId).child("assignments").child(assignmentId).setValue(assignmentData);
+    }
+
+    private void saveQuiz(String studentId, String quizId, String date, int marks, String pdfUrl, String subject, String title) {
+        Map<String, Object> quizData = new HashMap<>();
+        quizData.put("date", date);
+        quizData.put("marks", marks);
+        quizData.put("pdfUrl", pdfUrl);
+        quizData.put("subject", subject);
+        quizData.put("title", title);
+
+        databaseReference.child("students").child(studentId).child("quizzes").child(quizId).setValue(quizData);
     }
 }
