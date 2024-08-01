@@ -136,6 +136,20 @@
                 android:backgroundTint="?attr/colorPrimary"
                 android:textColor="@android:color/white" />
 
+
+            <Button
+                android:id="@+id/btnAtRiskStudents"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_below="@+id/gradesButton"
+                android:padding="16dp"
+                android:text="@string/at_risk_students"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:backgroundTint="?attr/colorPrimary" />
+
         </RelativeLayout>
 
     </ScrollView>

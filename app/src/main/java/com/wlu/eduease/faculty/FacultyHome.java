@@ -36,11 +36,24 @@ public class FacultyHome extends Fragment {
         Button btnGrades = view.findViewById(R.id.btnGrades);
         Button btnPTMSchedule = view.findViewById(R.id.btnPTMSchedule);
         Button atRiskButton = view.findViewById(R.id.btnAtRiskStudents);
+        Button btnAttendance = view.findViewById(R.id.addAttendanceButton);
+        btnAttendance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddAttendanceFragment addAttendanceFragment = new AddAttendanceFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, addAttendanceFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
 
         atRiskButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AtRiskStudent.class);
             startActivity(intent);
         });
+
         btnCourseMaterial.setOnClickListener(v -> {
             // Create the new fragment
             course_material courseMaterialFragment = new course_material();

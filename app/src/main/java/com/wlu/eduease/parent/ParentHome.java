@@ -1,5 +1,6 @@
 package com.wlu.eduease.parent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.wlu.eduease.R;
+import com.wlu.eduease.faculty.AtRiskStudent;
 
 import java.util.Locale;
 
@@ -29,7 +31,7 @@ public class ParentHome extends Fragment {
     private TextView subjectTextView;
     private TextView timeTextView;
     private TextView roomTextView;
-    private Button gradesButton;
+    private Button gradesButton,atRiskButton;
 
     private DatabaseReference databaseReference;
 
@@ -49,7 +51,11 @@ public class ParentHome extends Fragment {
         timeTextView = view.findViewById(R.id.timeTextView);
         roomTextView = view.findViewById(R.id.roomTextView);
         gradesButton = view.findViewById(R.id.gradesButton);
-
+        atRiskButton = view.findViewById(R.id.btnAtRiskStudents);
+        atRiskButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AtRiskStudent.class);
+            startActivity(intent);
+        });
         databaseReference = FirebaseDatabase.getInstance().getReference("ptm_schedule");
 
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {

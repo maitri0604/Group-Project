@@ -1,7 +1,8 @@
 package com.wlu.eduease.faculty;
 
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,7 +27,7 @@ public class StudentDetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle("EduEase");
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);// Ensure you have this drawable
         }
 
         String studentJson = getIntent().getStringExtra("student");
@@ -58,15 +59,6 @@ public class StudentDetailActivity extends AppCompatActivity {
                 quizzesContainer.addView(quizView);
             }
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private static class MyResponse {

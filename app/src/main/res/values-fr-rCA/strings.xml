@@ -86,6 +86,7 @@
     <string name="home">Accueil</string>
     <string name="settings">Paramètres</string>
     <string name="about_us">À Propos de Nous</string>
-        <string name="delete">supprimer</string>
+    <string name="delete">supprimer</string>
+    <string name="add_attendance">Add Attendance</string>
 
 </resources>
