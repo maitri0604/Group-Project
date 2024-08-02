@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">EduEase</string>
     <string name="app_name_txt">Bienvenue sur EduEase</string>
+    <string name="welcome_message">Bienvenue %1$s !</string>
     <string name="login">Se connecter</string>
     <string name="email">E-mail</string>
     <string name="password">Mot de passe</string>
@@ -81,4 +82,9 @@
     <string name="assignment_title">Titre du Devoir</string>
     <string name="select_date">Sélectionner la date</string>
     <string name="save_assignment">Enregistrer le Devoir</string>
+    <string name="Click_here_to_login">Cliquez ici pour vous connecter</string>
+    <string name="home">Accueil</string>
+    <string name="settings">Paramètres</string>
+    <string name="about_us">À Propos de Nous</string>
+
 </resources>

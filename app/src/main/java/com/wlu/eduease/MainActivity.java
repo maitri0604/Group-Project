@@ -68,7 +68,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if (dataSnapshot.exists()) {
                         String fullName = dataSnapshot.child("fullname").getValue(String.class);
                         userRole = dataSnapshot.child("role").getValue(String.class);
-                        textView.setText("Welcome " + fullName + "!");
+                        String welcomeMessage = getString(R.string.welcome_message, fullName);
+                        textView.setText(welcomeMessage);
+
                         updateMenuVisibility(userRole);
                         loadDefaultFragment(savedInstanceState);
                     }

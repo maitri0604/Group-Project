@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">EduEase</string>
     <string name="app_name_txt">Welcome to EduEase</string>
+    <string name="welcome_message">Welcome %1$s !</string>
+
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -82,4 +84,7 @@
     <string name="select_date">Select Date</string>
     <string name="save_assignment">Save Assignment</string>
     <string name="Click_here_to_login">Click_here_to_login</string>
+    <string name="home">Home</string>
+    <string name="settings">Settings</string>
+    <string name="about_us">About Us</string>
 </resources>
