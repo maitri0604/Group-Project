@@ -86,6 +86,7 @@
     <string name="home">Accueil</string>
     <string name="settings">Paramètres</string>
     <string name="about_us">À Propos de Nous</string>
-    <string name="actions">Actions</string>
+
+
 
 </resources>

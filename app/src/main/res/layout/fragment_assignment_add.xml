@@ -93,11 +93,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/pdf_url"
                         android:textColor="@android:color/white"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/actions"
-                        android:textColor="@android:color/white"/>
+
                 </TableRow>
 
                 <!-- Placeholder for data rows -->
