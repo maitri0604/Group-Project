@@ -1,4 +1,4 @@
-package com.wlu.eduease;
+package com.wlu.eduease.faculty;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.database.DataSnapshot;
@@ -26,43 +24,44 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.wlu.eduease.R;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class test_add extends Fragment {
+public class AssignmentAddFragment extends Fragment {
 
-    private static final String TAG = "test_add"; // For logging
+    private static final String TAG = "AssignmentAddFragment"; // For logging
     private Spinner spinnerSubject;
     private EditText editTextTitle, editTextDate, editTextPdfUrl;
-    private Button buttonSaveQuiz;
-    private TableLayout tableLayoutQuizzes;
-    private DatabaseReference facultyDataRef, quizzesRef;
+    private Button buttonSaveAssignment;
+    private TableLayout tableLayoutAssignments;
+    private DatabaseReference facultyDataRef, assignmentsRef;
     private List<String> subjects = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private String selectedSubject;
 
-    public test_add() {
+    public AssignmentAddFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tests_add, container, false);
+        View view = inflater.inflate(R.layout.fragment_assignment_add, container, false);
 
         // Initialize Firebase Database references
         facultyDataRef = FirebaseDatabase.getInstance().getReference("faculty_data");
-        quizzesRef = FirebaseDatabase.getInstance().getReference("quizzes");
+        assignmentsRef = FirebaseDatabase.getInstance().getReference("assignments");
 
         // Initialize UI components
         spinnerSubject = view.findViewById(R.id.spinnerSubject);
         editTextTitle = view.findViewById(R.id.editTextTitle);
         editTextDate = view.findViewById(R.id.editTextDate);
         editTextPdfUrl = view.findViewById(R.id.editTextPdfUrl);
-        buttonSaveQuiz = view.findViewById(R.id.buttonSaveQuiz);
-        tableLayoutQuizzes = view.findViewById(R.id.tableLayoutQuizzes);
+        buttonSaveAssignment = view.findViewById(R.id.buttonSaveAssignment);
+        tableLayoutAssignments = view.findViewById(R.id.tableLayoutAssignments);
 
         // Initialize Spinner and Adapter
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, subjects);
@@ -88,11 +87,11 @@ public class test_add extends Fragment {
         // Set OnClickListener for the date EditText
         editTextDate.setOnClickListener(v -> showDatePickerDialog());
 
-        // Save quiz button click listener
-        buttonSaveQuiz.setOnClickListener(v -> saveQuiz());
+        // Save assignment button click listener
+        buttonSaveAssignment.setOnClickListener(v -> saveAssignment());
 
-        // Load quizzes into TableLayout
-        loadQuizzes();
+        // Load assignments into TableLayout
+        loadAssignments();
 
         return view;
     }
@@ -140,7 +139,7 @@ public class test_add extends Fragment {
         datePickerDialog.show();
     }
 
-    private void saveQuiz() {
+    private void saveAssignment() {
         String title = editTextTitle.getText().toString().trim();
         String date = editTextDate.getText().toString().trim();
         String pdfUrl = editTextPdfUrl.getText().toString().trim();
@@ -150,20 +149,20 @@ public class test_add extends Fragment {
             return;
         }
 
-        quizzesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        assignmentsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Find the next available ID
                 int nextId = getNextAvailableId(dataSnapshot);
 
-                // Create and add the new quiz with the next ID
-                addQuiz(nextId, selectedSubject, title, date, pdfUrl);
+                // Create and add the new assignment with the next ID
+                addAssignment(nextId, selectedSubject, title, date, pdfUrl);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e(TAG, "Failed to read data: " + databaseError.getMessage());
-                Toast.makeText(getContext(), "Failed to save quiz", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Failed to save assignment", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -186,17 +185,17 @@ public class test_add extends Fragment {
         return maxId + 1;
     }
 
-    private void addQuiz(int id, String subject, String title, String date, String pdfUrl) {
+    private void addAssignment(int id, String subject, String title, String date, String pdfUrl) {
         String idStr = new DecimalFormat("00").format(id); // Format ID with leading zeroes
-        Quiz quiz = new Quiz(subject, title, date, pdfUrl);
-        quizzesRef.child(idStr).setValue(quiz).addOnCompleteListener(task -> {
+        Assignment assignment = new Assignment(subject, title, date, pdfUrl);
+        assignmentsRef.child(idStr).setValue(assignment).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Toast.makeText(getContext(), "Quiz added successfully with ID: " + idStr, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Assignment added successfully with ID: " + idStr, Toast.LENGTH_SHORT).show();
                 clearInputFields();
-                loadQuizzes(); // Reload quizzes after saving
+                loadAssignments(); // Reload assignments after saving
             } else {
-                Log.e(TAG, "Failed to save quiz: " + task.getException().getMessage());
-                Toast.makeText(getContext(), "Failed to save quiz", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Failed to save assignment: " + task.getException().getMessage());
+                Toast.makeText(getContext(), "Failed to save assignment", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -207,38 +206,38 @@ public class test_add extends Fragment {
         editTextPdfUrl.setText("");
     }
 
-    private void loadQuizzes() {
-        quizzesRef.addValueEventListener(new ValueEventListener() {
+    private void loadAssignments() {
+        assignmentsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                tableLayoutQuizzes.removeAllViews(); // Clear existing rows
+                tableLayoutAssignments.removeAllViews(); // Clear existing rows
                 // Add header row
                 TableRow headerRow = new TableRow(getActivity());
-                addTextViewToRow(headerRow, "Quiz ID");
+                addTextViewToRow(headerRow, "Assignment ID");
                 addTextViewToRow(headerRow, "Subject");
                 addTextViewToRow(headerRow, "Title");
                 addTextViewToRow(headerRow, "Date");
                 addTextViewToRow(headerRow, "PDF URL");
-                tableLayoutQuizzes.addView(headerRow);
+                tableLayoutAssignments.addView(headerRow);
 
                 // Add data rows
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String id = snapshot.getKey();
-                    Quiz quiz = snapshot.getValue(Quiz.class);
+                    Assignment assignment = snapshot.getValue(Assignment.class);
 
                     TableRow row = new TableRow(getActivity());
                     addTextViewToRow(row, id);
-                    addTextViewToRow(row, quiz.subject);
-                    addTextViewToRow(row, quiz.title);
-                    addTextViewToRow(row, quiz.date);
-                    addTextViewToRow(row, quiz.pdfUrl);
-                    tableLayoutQuizzes.addView(row);
+                    addTextViewToRow(row, assignment.subject);
+                    addTextViewToRow(row, assignment.title);
+                    addTextViewToRow(row, assignment.date);
+                    addTextViewToRow(row, assignment.pdfUrl);
+                    tableLayoutAssignments.addView(row);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "Failed to load quizzes: " + databaseError.getMessage());
+                Log.e(TAG, "Failed to load assignments: " + databaseError.getMessage());
             }
         });
     }
@@ -246,25 +245,26 @@ public class test_add extends Fragment {
     private void addTextViewToRow(TableRow row, String text) {
         TextView textView = new TextView(getActivity());
         textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
-        textView.setPadding(8, 8, 8, 8);
         textView.setText(text);
         row.addView(textView);
     }
 
-    private static class Quiz {
+    // Inner class to represent Assignment data
+    private static class Assignment {
         public String subject;
         public String title;
         public String date;
         public String pdfUrl;
 
-        public Quiz(String subject, String title, String date, String pdfUrl) {
+        public Assignment() {
+            // Default constructor required for calls to DataSnapshot.getValue(Assignment.class)
+        }
+
+        public Assignment(String subject, String title, String date, String pdfUrl) {
             this.subject = subject;
             this.title = title;
             this.date = date;
             this.pdfUrl = pdfUrl;
-        }
-
-        public Quiz() { // Default constructor required for Firebase
         }
     }
 }

@@ -1,6 +1,5 @@
-package com.wlu.eduease;
+package com.wlu.eduease.student;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.wlu.eduease.R;
 
 public class StudentHome extends Fragment {
 

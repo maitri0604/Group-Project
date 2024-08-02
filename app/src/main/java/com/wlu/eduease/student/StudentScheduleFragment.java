@@ -1,25 +1,25 @@
-package com.wlu.eduease;
+package com.wlu.eduease.student;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.cardview.widget.CardView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.wlu.eduease.R;
+
 import java.util.Locale;
 
-public class ParentHome extends Fragment {
+public class StudentScheduleFragment extends Fragment {
 
     private CalendarView calendarView;
     private CardView scheduleCardView;
@@ -27,41 +27,33 @@ public class ParentHome extends Fragment {
     private TextView subjectTextView;
     private TextView timeTextView;
     private TextView roomTextView;
-    private Button gradesButton;
 
     private DatabaseReference databaseReference;
 
-    public ParentHome() {
-        // Required empty public constructor
-    }
-
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_parent, container, false);
+        View view = inflater.inflate(R.layout.fragment_student_schedule, container, false);
 
         calendarView = view.findViewById(R.id.calendarView);
-        scheduleCardView = view.findViewById(R.id.ptmScheduleCardView);
+        scheduleCardView = view.findViewById(R.id.scheduleCardView);
         facultyNameTextView = view.findViewById(R.id.facultyNameTextView);
         subjectTextView = view.findViewById(R.id.subjectTextView);
         timeTextView = view.findViewById(R.id.timeTextView);
         roomTextView = view.findViewById(R.id.roomTextView);
-        gradesButton = view.findViewById(R.id.gradesButton);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("ptm_schedule");
+        databaseReference = FirebaseDatabase.getInstance().getReference("class_schedules");
 
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
-            String selectedDate = String.format(Locale.getDefault(), "%d-%02d-%02d", year, month + 1, dayOfMonth);
-            fetchPTMSchedule(selectedDate);
+            String selectedDate = String.format(Locale.getDefault(), "%d/%d/%d", dayOfMonth, month + 1, year);
+            fetchClassSchedule(selectedDate);
         });
-
-        gradesButton.setOnClickListener(v -> openGradesFragment());
 
         return view;
     }
 
-    private void fetchPTMSchedule(String date) {
-        databaseReference.orderByChild("date").equalTo(date).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void fetchClassSchedule(String date) {
+        databaseReference.orderByChild("day").equalTo(date).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -69,7 +61,7 @@ public class ParentHome extends Fragment {
                         String facultyName = scheduleSnapshot.child("faculty_name").getValue(String.class);
                         String subjectName = scheduleSnapshot.child("subject").getValue(String.class);
                         String time = scheduleSnapshot.child("time").getValue(String.class);
-                        String room = scheduleSnapshot.child("room_number").getValue(String.class);
+                        String room = scheduleSnapshot.child("room").getValue(String.class);
 
                         facultyNameTextView.setText(facultyName);
                         subjectTextView.setText(subjectName);
@@ -89,13 +81,5 @@ public class ParentHome extends Fragment {
                 // Handle possible errors
             }
         });
-    }
-
-    private void openGradesFragment() {
-        Fragment gradesFragment = new StudentGradesFragment();
-        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, gradesFragment); // Make sure R.id.fragment_container is the correct ID
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 }

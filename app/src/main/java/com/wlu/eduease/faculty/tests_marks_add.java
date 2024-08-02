@@ -1,4 +1,4 @@
-package com.wlu.eduease;
+package com.wlu.eduease.faculty;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,21 +21,23 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.wlu.eduease.R;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AssignmentsMarksAddFragment extends Fragment {
+public class tests_marks_add extends Fragment {
 
-    private Spinner spinnerAssignments;
+    private Spinner spinnerTests;
     private LinearLayout studentMarksContainer;
-    private DatabaseReference studentDataRef, assignmentsRef;
+    private DatabaseReference studentDataRef, quizzesRef;
     private ArrayList<StudentData> studentNames;
-    private ArrayList<AssignmentData> assignmentList;
-    private AssignmentAdapter assignmentAdapter;
-    private String selectedAssignmentId;
+    private ArrayList<QuizData> quizList;
+    private QuizAdapter quizAdapter;
+    private String selectedQuizId;
 
-    public AssignmentsMarksAddFragment() {
+    public tests_marks_add() {
         // Required empty public constructor
     }
 
@@ -43,46 +45,45 @@ public class AssignmentsMarksAddFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_assignments_marks_add, container, false);
+        View view = inflater.inflate(R.layout.fragment_tests_marks_add, container, false);
 
         // Initialize UI components
-        spinnerAssignments = view.findViewById(R.id.spinnerAssignments);
+        spinnerTests = view.findViewById(R.id.spinnerTests);
         studentMarksContainer = view.findViewById(R.id.llStudentMarksContainer);
-
         Button btnSaveMarks = view.findViewById(R.id.btnSaveMarks);
 
         // Initialize Firebase Database references
         studentDataRef = FirebaseDatabase.getInstance().getReference().child("studentTuples");
-        assignmentsRef = FirebaseDatabase.getInstance().getReference().child("assignments");
+        quizzesRef = FirebaseDatabase.getInstance().getReference().child("quizzes");
 
-        // Initialize student names and assignment list
+        // Initialize student names and quiz list
         studentNames = new ArrayList<>();
-        assignmentList = new ArrayList<>();
+        quizList = new ArrayList<>();
 
         // Initialize Spinner and Adapter
-        assignmentAdapter = new AssignmentAdapter(getActivity(), assignmentList);
-        spinnerAssignments.setAdapter(assignmentAdapter);
+        quizAdapter = new QuizAdapter(getActivity(), quizList);
+        spinnerTests.setAdapter(quizAdapter);
 
         // Load data
         loadAllStudentNames();
-        loadAllAssignments();
+        loadAllQuizzes();
 
         // Spinner item selection listener
-        spinnerAssignments.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerTests.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position >= 0 && position < assignmentList.size()) {
-                    selectedAssignmentId = assignmentList.get(position).assignmentId;
-                    loadMarksForSelectedAssignment(); // Load marks for the selected assignment
+                if (position >= 0 && position < quizList.size()) {
+                    selectedQuizId = quizList.get(position).quizId;
+                    loadMarksForSelectedQuiz(); // Load marks for the selected quiz
                 } else {
-                    selectedAssignmentId = null;
+                    selectedQuizId = null;
                 }
-                Log.d("AssignmentsMarksAddFragment", "Selected assignment ID: " + selectedAssignmentId);
+                Log.d("tests_marks_add", "Selected quiz ID: " + selectedQuizId);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                selectedAssignmentId = null;
+                selectedQuizId = null;
             }
         });
 
@@ -105,37 +106,37 @@ public class AssignmentsMarksAddFragment extends Fragment {
                         addStudentView(studentName);
                     }
                 }
-                Log.d("AssignmentsMarksAddFragment", "Student names loaded: " + studentNames.size());
+                Log.d("tests_marks_add", "Student names loaded: " + studentNames.size());
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getActivity(), "Failed to load students: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("AssignmentsMarksAddFragment", "Failed to load students: " + databaseError.getMessage());
+                Log.e("tests_marks_add", "Failed to load students: " + databaseError.getMessage());
             }
         });
     }
 
-    private void loadAllAssignments() {
-        assignmentsRef.addValueEventListener(new ValueEventListener() {
+    private void loadAllQuizzes() {
+        quizzesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                assignmentList.clear();
+                quizList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String assignmentId = snapshot.getKey(); // Get the assignment ID
-                    String title = snapshot.child("title").getValue(String.class); // Get the assignment title
-                    if (assignmentId != null && title != null) {
-                        assignmentList.add(new AssignmentData(assignmentId, title));
+                    String quizId = snapshot.getKey(); // Get the quiz ID
+                    String title = snapshot.child("title").getValue(String.class); // Get the quiz title
+                    if (quizId != null && title != null) {
+                        quizList.add(new QuizData(quizId, title));
                     }
                 }
-                Log.d("AssignmentsMarksAddFragment", "Assignment list loaded: " + assignmentList.size());
-                assignmentAdapter.notifyDataSetChanged();
+                Log.d("tests_marks_add", "Quiz list loaded: " + quizList.size());
+                quizAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "Failed to load assignments: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("AssignmentsMarksAddFragment", "Failed to load assignments: " + databaseError.getMessage());
+                Toast.makeText(getActivity(), "Failed to load quizzes: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("tests_marks_add", "Failed to load quizzes: " + databaseError.getMessage());
             }
         });
     }
@@ -175,8 +176,8 @@ public class AssignmentsMarksAddFragment extends Fragment {
     }
 
     private void saveMarks() {
-        if (selectedAssignmentId == null) {
-            Toast.makeText(getActivity(), "Please select an assignment", Toast.LENGTH_SHORT).show();
+        if (selectedQuizId == null) {
+            Toast.makeText(getActivity(), "Please select a test", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -211,17 +212,17 @@ public class AssignmentsMarksAddFragment extends Fragment {
         }
 
         if (allMarksEntered) {
-            DatabaseReference marksRef = assignmentsRef.child(selectedAssignmentId).child("marks");
+            DatabaseReference marksRef = quizzesRef.child(selectedQuizId).child("marks");
             marksRef.updateChildren(marksMap)
-                    .addOnSuccessListener(aVoid -> Toast.makeText(getActivity(), "Marks saved for assignment: " + selectedAssignmentId, Toast.LENGTH_SHORT).show())
+                    .addOnSuccessListener(aVoid -> Toast.makeText(getActivity(), "Marks saved for test: " + selectedQuizId, Toast.LENGTH_SHORT).show())
                     .addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to save marks: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
     }
 
-    private void loadMarksForSelectedAssignment() {
-        if (selectedAssignmentId == null) return;
+    private void loadMarksForSelectedQuiz() {
+        if (selectedQuizId == null) return;
 
-        DatabaseReference marksRef = assignmentsRef.child(selectedAssignmentId).child("marks");
+        DatabaseReference marksRef = quizzesRef.child(selectedQuizId).child("marks");
         marksRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -241,7 +242,7 @@ public class AssignmentsMarksAddFragment extends Fragment {
                     if (marks != null) {
                         marksEditText.setText(String.valueOf(marks));
                     } else {
-                        marksEditText.setText(""); // Clear the EditText if no marks are found
+                        marksEditText.setText(""); // Clear if no marks are available
                     }
                 }
             }
@@ -249,61 +250,58 @@ public class AssignmentsMarksAddFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getActivity(), "Failed to load marks: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("tests_marks_add", "Failed to load marks: " + databaseError.getMessage());
             }
         });
     }
 
-    // Class to hold student data
-    private static class StudentData {
-        public String studentName;
+    // Class for storing student data
+    static class StudentData {
+        String name;
 
-        public StudentData(String studentName) {
-            this.studentName = studentName;
+        StudentData(String name) {
+            this.name = name;
         }
     }
 
-    // Class to hold assignment data
-    private static class AssignmentData {
-        public String assignmentId;
-        public String title;
+    // Class for storing quiz data
+    static class QuizData {
+        String quizId;
+        String title;
 
-        public AssignmentData(String assignmentId, String title) {
-            this.assignmentId = assignmentId;
+        QuizData(String quizId, String title) {
+            this.quizId = quizId;
             this.title = title;
         }
     }
 
-    // Adapter for assignment Spinner
-    private static class AssignmentAdapter extends ArrayAdapter<AssignmentData> {
+    // Custom adapter for quizzes
+    private static class QuizAdapter extends ArrayAdapter<QuizData> {
 
-        public AssignmentAdapter(Context context, ArrayList<AssignmentData> assignmentList) {
-            super(context, android.R.layout.simple_spinner_item, assignmentList);
-            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        public QuizAdapter(@NonNull Context context, ArrayList<QuizData> quizzes) {
+            super(context, 0, quizzes);
         }
 
         @NonNull
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_spinner_item, parent, false);
-            }
-            AssignmentData assignment = getItem(position);
-            if (assignment != null) {
-                TextView textView = convertView.findViewById(android.R.id.text1);
-                textView.setText(assignment.title);
-            }
-            return convertView;
+            return initView(position, convertView, parent);
         }
 
         @Override
         public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
+            return initView(position, convertView, parent);
+        }
+
+        private View initView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_spinner_item, parent, false);
             }
-            AssignmentData assignment = getItem(position);
-            if (assignment != null) {
-                TextView textView = convertView.findViewById(android.R.id.text1);
-                textView.setText(assignment.title);
+
+            TextView textView = convertView.findViewById(android.R.id.text1);
+            QuizData quiz = getItem(position);
+            if (quiz != null) {
+                textView.setText("ID: " + quiz.quizId + " | Title: " + quiz.title);
             }
             return convertView;
         }

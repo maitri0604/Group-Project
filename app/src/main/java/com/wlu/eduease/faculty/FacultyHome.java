@@ -1,4 +1,4 @@
-package com.wlu.eduease;
+package com.wlu.eduease.faculty;
 
 import android.os.Bundle;
 
@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.wlu.eduease.R;
 
 public class FacultyHome extends Fragment {
 

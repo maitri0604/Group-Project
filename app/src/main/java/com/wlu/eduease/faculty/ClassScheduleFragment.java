@@ -1,4 +1,4 @@
-package com.wlu.eduease;
+package com.wlu.eduease.faculty;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.wlu.eduease.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
