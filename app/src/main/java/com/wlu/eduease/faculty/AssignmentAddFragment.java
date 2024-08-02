@@ -33,7 +33,7 @@ import java.util.List;
 
 public class AssignmentAddFragment extends Fragment {
 
-    private static final String TAG = "AssignmentAddFragment"; // For logging
+    private static final String TAG = "AssignmentAddFragment";
     private Spinner spinnerSubject;
     private EditText editTextTitle, editTextDate, editTextPdfUrl;
     private Button buttonSaveAssignment;
@@ -42,6 +42,7 @@ public class AssignmentAddFragment extends Fragment {
     private List<String> subjects = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private String selectedSubject;
+    private String currentEditingId = null;
 
     public AssignmentAddFragment() {
         // Required empty public constructor
@@ -88,7 +89,13 @@ public class AssignmentAddFragment extends Fragment {
         editTextDate.setOnClickListener(v -> showDatePickerDialog());
 
         // Save assignment button click listener
-        buttonSaveAssignment.setOnClickListener(v -> saveAssignment());
+        buttonSaveAssignment.setOnClickListener(v -> {
+            if (currentEditingId == null) {
+                saveAssignment();
+            } else {
+                updateAssignment(currentEditingId);
+            }
+        });
 
         // Load assignments into TableLayout
         loadAssignments();
@@ -200,6 +207,42 @@ public class AssignmentAddFragment extends Fragment {
         });
     }
 
+    private void updateAssignment(String id) {
+        String title = editTextTitle.getText().toString().trim();
+        String date = editTextDate.getText().toString().trim();
+        String pdfUrl = editTextPdfUrl.getText().toString().trim();
+
+        if (selectedSubject == null || title.isEmpty() || date.isEmpty() || pdfUrl.isEmpty()) {
+            Toast.makeText(getContext(), "Please fill all fields and provide a PDF URL", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Assignment updatedAssignment = new Assignment(selectedSubject, title, date, pdfUrl);
+        assignmentsRef.child(id).setValue(updatedAssignment).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(getContext(), "Assignment updated successfully", Toast.LENGTH_SHORT).show();
+                clearInputFields();
+                currentEditingId = null; // Reset current editing ID
+                loadAssignments(); // Reload assignments after updating
+            } else {
+                Log.e(TAG, "Failed to update assignment: " + task.getException().getMessage());
+                Toast.makeText(getContext(), "Failed to update assignment", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void deleteAssignment(String id) {
+        assignmentsRef.child(id).removeValue().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(getContext(), "Assignment deleted successfully", Toast.LENGTH_SHORT).show();
+                loadAssignments(); // Reload assignments after deleting
+            } else {
+                Log.e(TAG, "Failed to delete assignment: " + task.getException().getMessage());
+                Toast.makeText(getContext(), "Failed to delete assignment", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void clearInputFields() {
         editTextTitle.setText("");
         editTextDate.setText("");
@@ -210,15 +253,8 @@ public class AssignmentAddFragment extends Fragment {
         assignmentsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                tableLayoutAssignments.removeAllViews(); // Clear existing rows
-                // Add header row
-                TableRow headerRow = new TableRow(getActivity());
-                addTextViewToRow(headerRow, "Assignment ID");
-                addTextViewToRow(headerRow, "Subject");
-                addTextViewToRow(headerRow, "Title");
-                addTextViewToRow(headerRow, "Date");
-                addTextViewToRow(headerRow, "PDF URL");
-                tableLayoutAssignments.addView(headerRow);
+                tableLayoutAssignments.removeAllViews();
+                loadTableHeader();
 
                 // Add data rows
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -226,11 +262,31 @@ public class AssignmentAddFragment extends Fragment {
                     Assignment assignment = snapshot.getValue(Assignment.class);
 
                     TableRow row = new TableRow(getActivity());
+                    row.setPadding(8, 8, 8, 8);
+                    row.setOnClickListener(v -> {
+                        // Populate fields with selected assignment's data
+                        editTextTitle.setText(assignment.title);
+                        editTextDate.setText(assignment.date);
+                        editTextPdfUrl.setText(assignment.pdfUrl);
+                        selectedSubject = assignment.subject; // Set selected subject if needed
+
+                        // Save button should now update instead of add
+                        buttonSaveAssignment.setText("Update Assignment");
+                        currentEditingId = id; // Set current editing ID
+                    });
+
                     addTextViewToRow(row, id);
                     addTextViewToRow(row, assignment.subject);
                     addTextViewToRow(row, assignment.title);
                     addTextViewToRow(row, assignment.date);
                     addTextViewToRow(row, assignment.pdfUrl);
+
+                    // Add delete button
+                    Button deleteButton = new Button(getActivity());
+                    deleteButton.setText("Delete");
+                    deleteButton.setOnClickListener(v -> deleteAssignment(id));
+                    row.addView(deleteButton);
+
                     tableLayoutAssignments.addView(row);
                 }
             }
@@ -238,19 +294,34 @@ public class AssignmentAddFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e(TAG, "Failed to load assignments: " + databaseError.getMessage());
+                Toast.makeText(getContext(), "Failed to load assignments", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    private void loadTableHeader() {
+        TableRow headerRow = new TableRow(getActivity());
+        headerRow.setPadding(8, 8, 8, 8);
+        headerRow.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+        addTextViewToRow(headerRow, "ID");
+        addTextViewToRow(headerRow, "Subject");
+        addTextViewToRow(headerRow, "Title");
+        addTextViewToRow(headerRow, "Date");
+        addTextViewToRow(headerRow, "PDF URL");
+
+        tableLayoutAssignments.addView(headerRow);
+    }
+
     private void addTextViewToRow(TableRow row, String text) {
         TextView textView = new TextView(getActivity());
-        textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
         textView.setText(text);
+        textView.setPadding(8, 8, 8, 8);
         row.addView(textView);
     }
 
-    // Inner class to represent Assignment data
-    private static class Assignment {
+    // Define the Assignment class
+    public static class Assignment {
         public String subject;
         public String title;
         public String date;

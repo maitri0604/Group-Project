@@ -67,7 +67,7 @@
     <string name="grades">Notes</string>
     <string name="faculty_name1">Nom de l\'enseignant</string>
     <string name="save_meeting">Enregistrer la Réunion</string>
-    <string name="teacher">Enseignant</string>
+    <string name="teacher">la faculté</string>
     <string name="tests_quizzes_grades">Notes des Tests/Quiz</string>
     <string name="add_assignments">Ajouter des Devoirs</string>
     <string name="assignments_grades">Notes des Devoirs</string>
@@ -86,5 +86,6 @@
     <string name="home">Accueil</string>
     <string name="settings">Paramètres</string>
     <string name="about_us">À Propos de Nous</string>
+    <string name="actions">Actions</string>
 
 </resources>

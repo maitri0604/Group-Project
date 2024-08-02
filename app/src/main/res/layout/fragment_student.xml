@@ -58,15 +58,6 @@
             android:layout_margin="8dp"/>
 
         <Button
-            android:id="@+id/btnTestsQuizzes"
-            android:layout_width="15dp"
-            android:layout_height="110dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:text="@string/tests_quizzes"
-            android:layout_margin="8dp"/>
-
-        <Button
             android:id="@+id/btnAssignments"
             android:layout_width="15dp"
             android:layout_height="110dp"
@@ -74,15 +65,14 @@
             android:layout_rowWeight="1"
             android:text="@string/assignments"
             android:layout_margin="8dp"/>
-
-        <Button
-            android:id="@+id/btnGrades"
-            android:layout_width="15dp"
-            android:layout_height="110dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:text="@string/grades"
-            android:layout_margin="8dp"/>
-
     </GridLayout>
+
+    <Button
+        android:id="@+id/btnGrades"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:text="@string/grades"
+        android:layout_margin="8dp"/>
 </LinearLayout>
