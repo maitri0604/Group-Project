@@ -249,22 +249,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void saveAssignment(String studentId, String assignmentId, String date, int marks, String pdfUrl, String subject, String title) {
         Map<String, Object> assignmentData = new HashMap<>();
-        assignmentData.put("date", date);
         assignmentData.put("marks", marks);
-        assignmentData.put("pdfUrl", pdfUrl);
         assignmentData.put("subject", subject);
-        assignmentData.put("title", title);
 
         databaseReference.child("students").child(studentId).child("assignments").child(assignmentId).setValue(assignmentData);
     }
 
     private void saveQuiz(String studentId, String quizId, String date, int marks, String pdfUrl, String subject, String title) {
         Map<String, Object> quizData = new HashMap<>();
-        quizData.put("date", date);
         quizData.put("marks", marks);
-        quizData.put("pdfUrl", pdfUrl);
         quizData.put("subject", subject);
-        quizData.put("title", title);
+
 
         databaseReference.child("students").child(studentId).child("quizzes").child(quizId).setValue(quizData);
     }
