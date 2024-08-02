@@ -81,4 +81,5 @@
     <string name="assignment_title">Assignment Title</string>
     <string name="select_date">Select Date</string>
     <string name="save_assignment">Save Assignment</string>
+    <string name="Click_here_to_login">Click_here_to_login</string>
 </resources>
