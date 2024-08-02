@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
-        android:text="Teacher"
+        android:text="@string/teacher"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -49,7 +49,7 @@
                     android:layout_gravity="center"
                     android:drawableTop="@drawable/images"
                     android:padding="16dp"
-                    android:text="Test Schedule"
+                    android:text="@string/test_schedule"
                     android:textSize="14sp"
                     android:textColor="@android:color/white"
                     android:backgroundTint="?attr/colorPrimary" />
@@ -69,7 +69,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:padding="16dp"
-                    android:text="Class Schedule"
+                    android:text="@string/class_schedule"
                     android:drawableTop="@drawable/classtime_foreground"
                     android:textSize="14sp"
                     android:textColor="@android:color/white"
@@ -90,7 +90,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:padding="16dp"
-                    android:text="Course Material"
+                    android:text="@string/course_material"
                     android:textSize="14sp"
                     android:textColor="@android:color/white"
                     android:backgroundTint="?attr/colorPrimary" />
@@ -110,7 +110,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:padding="16dp"
-                    android:text="Tests/Quizzes Grades"
+                    android:text="@string/tests_quizzes_grades"
                     android:textSize="14sp"
                     android:textColor="@android:color/white"
                     android:backgroundTint="?attr/colorPrimary" />
@@ -130,7 +130,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:padding="16dp"
-                    android:text="Add Assignments"
+                    android:text="@string/add_assignments"
                     android:textSize="14sp"
                     android:textColor="@android:color/white"
                     android:backgroundTint="?attr/colorPrimary" />
@@ -150,7 +150,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:padding="16dp"
-                    android:text="Assignments Grades"
+                    android:text="@string/assignments_grades"
                     android:textSize="14sp"
                     android:textColor="@android:color/white"
                     android:backgroundTint="?attr/colorPrimary" />
@@ -170,7 +170,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:padding="16dp"
-                    android:text="At-Risk Students"
+                    android:text="@string/at_risk_students"
                     android:textSize="14sp"
                     android:textColor="@android:color/white"
                     android:backgroundTint="?attr/colorPrimary" />
@@ -190,7 +190,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:padding="16dp"
-                    android:text="PTM Schedule"
+                    android:text="@string/ptm_schedule"
                     android:textSize="14sp"
                     android:textColor="@android:color/white"
                     android:backgroundTint="?attr/colorPrimary" />

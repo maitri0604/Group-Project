@@ -8,7 +8,7 @@
         android:id="@+id/facultyNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Faculty Name"
+        android:text="@string/faculty_name"
         android:textSize="18sp" />
 
     <Spinner
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/subjectSpinner"
         android:layout_marginTop="16dp"
-        android:text="Select Day" />
+        android:text="@string/select_day" />
 
     <TextView
         android:id="@+id/timeTextView"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/dayTextView"
         android:layout_marginTop="16dp"
-        android:text="Select Time" />
+        android:text="@string/select_time" />
 
     <EditText
         android:id="@+id/roomEditText"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/timeTextView"
         android:layout_marginTop="16dp"
-        android:hint="Room" />
+        android:hint="@string/room" />
 
     <Button
         android:id="@+id/saveButton"
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/roomEditText"
         android:layout_marginTop="16dp"
-        android:text="Save" />
+        android:text="@string/save" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/scheduleRecyclerView"

@@ -21,7 +21,7 @@
             android:id="@+id/editTextTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Assignment Title"
+            android:hint="@string/assignment_title"
             android:layout_marginBottom="8dp" />
 
         <!-- Date EditText -->
@@ -29,7 +29,7 @@
             android:id="@+id/editTextDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Select Date"
+            android:hint="@string/select_date"
             android:focusable="false"
             android:clickable="true"
             android:layout_marginBottom="8dp" />
@@ -39,7 +39,7 @@
             android:id="@+id/editTextPdfUrl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="PDF URL"
+            android:hint="@string/pdf_url"
             android:layout_marginBottom="16dp" />
 
         <!-- Save Assignment Button -->
@@ -47,7 +47,7 @@
             android:id="@+id/buttonSaveAssignment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save Assignment" />
+            android:text="@string/save_assignment" />
 
         <!-- TableLayout to display assignments -->
         <TableLayout

@@ -17,7 +17,7 @@
             android:id="@+id/facultyNameText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Faculty Name"
+            android:text="@string/faculty_name1"
             android:textSize="18sp"
             android:layout_marginBottom="8dp"/>
 
@@ -30,27 +30,27 @@
             android:id="@+id/dateEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Date"
+            android:hint="@string/date"
             android:inputType="date"/>
 
         <EditText
             android:id="@+id/timeEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Time"
+            android:hint="@string/time"
             android:inputType="time"/>
 
         <EditText
             android:id="@+id/roomEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Room Number"/>
+            android:hint="@string/room_number"/>
 
         <Button
             android:id="@+id/saveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save Meeting"
+            android:text="@string/save_meeting"
             android:layout_marginTop="16dp"/>
 
         <androidx.recyclerview.widget.RecyclerView

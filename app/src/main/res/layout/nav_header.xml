@@ -20,7 +20,7 @@
         android:id="@+id/user_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to EduEase"
+        android:text="@string/welcome_to_eduease"
         android:textSize="25sp"
         android:textColor="@color/white"
         android:textStyle="bold"

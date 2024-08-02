@@ -24,7 +24,7 @@
                 android:id="@+id/quizTitleLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Quiz Title: "
+                android:text="@string/title"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"/>
@@ -37,30 +37,6 @@
                 android:textColor="@android:color/black"/>
         </LinearLayout>
 
-<!--        &lt;!&ndash; Student Name &ndash;&gt;-->
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:layout_marginBottom="8dp">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/studentNameLabel"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Student Name: "-->
-<!--                android:textSize="16sp"-->
-<!--                android:textStyle="bold"-->
-<!--                android:textColor="@android:color/black"/>-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/markStudentName"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textSize="16sp"-->
-<!--                android:textColor="@android:color/black"/>-->
-<!--        </LinearLayout>-->
-
         <!-- Mark Value -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,7 +48,7 @@
                 android:id="@+id/markLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mark: "
+                android:text="@string/mark"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"/>

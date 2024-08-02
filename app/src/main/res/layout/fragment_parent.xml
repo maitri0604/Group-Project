@@ -5,123 +5,129 @@
     android:layout_height="match_parent"
     tools:context=".ParentHome">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp"
-        tools:context=".ParentHomeFragment">
+        android:layout_height="match_parent">
 
-        <!-- Label for PTM Schedule -->
-        <TextView
-            android:id="@+id/ptmScheduleLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Parent-Teacher Meeting Schedule"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="16dp" />
-
-        <CalendarView
-            android:id="@+id/calendarView"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ptmScheduleLabel"/>
+            android:padding="16dp"
+            tools:context=".ParentHomeFragment">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/ptmScheduleCardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/calendarView"
-            android:layout_marginTop="16dp"
-            android:padding="16dp">
+            <!-- Label for PTM Schedule -->
+            <TextView
+                android:id="@+id/ptmScheduleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/parent_teacher_meeting_schedule"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="16dp" />
 
-            <RelativeLayout
+            <CalendarView
+                android:id="@+id/calendarView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ptmScheduleLabel"/>
 
-                <!-- Faculty Name Label and Value -->
-                <TextView
-                    android:id="@+id/facultyNameLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Faculty Name:"
-                    android:textStyle="bold"
-                    android:layout_marginTop="10dp" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ptmScheduleCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/calendarView"
+                android:layout_marginTop="16dp"
+                android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/facultyNameTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/facultyNameLabel"
-                    android:layout_alignBaseline="@id/facultyNameLabel" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <!-- Subject Label and Value -->
-                <TextView
-                    android:id="@+id/subjectLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/facultyNameLabel"
-                    android:text="Subject:"
-                    android:textStyle="bold"
-                    android:layout_marginTop="10dp" />
+                    <!-- Faculty Name Label and Value -->
+                    <TextView
+                        android:id="@+id/facultyNameLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/faculty_name"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp" />
 
-                <TextView
-                    android:id="@+id/subjectTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/subjectLabel"
-                    android:layout_alignBaseline="@id/subjectLabel" />
+                    <TextView
+                        android:id="@+id/facultyNameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/facultyNameLabel"
+                        android:layout_alignBaseline="@id/facultyNameLabel" />
 
-                <!-- Time Label and Value -->
-                <TextView
-                    android:id="@+id/timeLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/subjectLabel"
-                    android:text="Time:"
-                    android:textStyle="bold"
-                    android:layout_marginTop="10dp" />
+                    <!-- Subject Label and Value -->
+                    <TextView
+                        android:id="@+id/subjectLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/facultyNameLabel"
+                        android:text="@string/subject"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp" />
 
-                <TextView
-                    android:id="@+id/timeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/timeLabel"
-                    android:layout_alignBaseline="@id/timeLabel" />
+                    <TextView
+                        android:id="@+id/subjectTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/subjectLabel"
+                        android:layout_alignBaseline="@id/subjectLabel" />
 
-                <!-- Room Number Label and Value -->
-                <TextView
-                    android:id="@+id/roomLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/timeLabel"
-                    android:text="Room Number:"
-                    android:textStyle="bold"
-                    android:layout_marginTop="10dp" />
+                    <!-- Time Label and Value -->
+                    <TextView
+                        android:id="@+id/timeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/subjectLabel"
+                        android:text="@string/time"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp" />
 
-                <TextView
-                    android:id="@+id/roomTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/roomLabel"
-                    android:layout_alignBaseline="@id/roomLabel" />
+                    <TextView
+                        android:id="@+id/timeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/timeLabel"
+                        android:layout_alignBaseline="@id/timeLabel" />
 
-            </RelativeLayout>
+                    <!-- Room Number Label and Value -->
+                    <TextView
+                        android:id="@+id/roomLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/timeLabel"
+                        android:text="@string/room_number"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp" />
 
-        </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:id="@+id/roomTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/roomLabel"
+                        android:layout_alignBaseline="@id/roomLabel" />
 
-        <!-- Button for Grades -->
-        <Button
-            android:id="@+id/gradesButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ptmScheduleCardView"
-            android:layout_marginTop="16dp"
-            android:text="View Grades"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+                </RelativeLayout>
 
-    </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Button for Grades -->
+            <Button
+                android:id="@+id/gradesButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ptmScheduleCardView"
+                android:layout_marginTop="16dp"
+                android:text="@string/view_grades"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </FrameLayout>
