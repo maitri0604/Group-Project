@@ -33,7 +33,7 @@ import java.util.List;
 
 public class test_add extends Fragment {
 
-    private static final String TAG = "test_add"; // For logging
+    private static final String TAG = "test_add";
     private Spinner spinnerSubject;
     private EditText editTextTitle, editTextDate, editTextPdfUrl;
     private Button buttonSaveQuiz;
@@ -42,6 +42,7 @@ public class test_add extends Fragment {
     private List<String> subjects = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private String selectedSubject;
+    private String editingQuizId; // Store the ID of the quiz being edited
 
     public test_add() {
         // Required empty public constructor
@@ -88,7 +89,13 @@ public class test_add extends Fragment {
         editTextDate.setOnClickListener(v -> showDatePickerDialog());
 
         // Save quiz button click listener
-        buttonSaveQuiz.setOnClickListener(v -> saveQuiz());
+        buttonSaveQuiz.setOnClickListener(v -> {
+            if (editingQuizId == null) {
+                saveQuiz(); // Save new quiz
+            } else {
+                updateQuiz(); // Update existing quiz
+            }
+        });
 
         // Load quizzes into TableLayout
         loadQuizzes();
@@ -204,6 +211,7 @@ public class test_add extends Fragment {
         editTextTitle.setText("");
         editTextDate.setText("");
         editTextPdfUrl.setText("");
+        editingQuizId = null; // Clear the editing ID
     }
 
     private void loadQuizzes() {
@@ -218,6 +226,7 @@ public class test_add extends Fragment {
                 addTextViewToRow(headerRow, "Title");
                 addTextViewToRow(headerRow, "Date");
                 addTextViewToRow(headerRow, "PDF URL");
+                // No Update button in the header row
                 tableLayoutQuizzes.addView(headerRow);
 
                 // Add data rows
@@ -231,6 +240,19 @@ public class test_add extends Fragment {
                     addTextViewToRow(row, quiz.title);
                     addTextViewToRow(row, quiz.date);
                     addTextViewToRow(row, quiz.pdfUrl);
+
+                    // Add Delete button
+                    addButtonToRow(row, "Delete", v -> deleteQuiz(id));
+
+                    // Click listener to set data in the EditText fields for updating
+                    row.setOnClickListener(v -> {
+                        editTextTitle.setText(quiz.title);
+                        editTextDate.setText(quiz.date);
+                        editTextPdfUrl.setText(quiz.pdfUrl);
+                        editingQuizId = id; // Set ID of the quiz being edited
+                        buttonSaveQuiz.setText("Update Quiz");
+                    });
+
                     tableLayoutQuizzes.addView(row);
                 }
             }
@@ -248,6 +270,49 @@ public class test_add extends Fragment {
         textView.setPadding(8, 8, 8, 8);
         textView.setText(text);
         row.addView(textView);
+    }
+
+    private void addButtonToRow(TableRow row, String text, View.OnClickListener listener) {
+        Button button = new Button(getActivity());
+        button.setText(text);
+        button.setOnClickListener(listener);
+        row.addView(button);
+    }
+
+    private void updateQuiz() {
+        String newTitle = editTextTitle.getText().toString().trim();
+        String newDate = editTextDate.getText().toString().trim();
+        String newPdfUrl = editTextPdfUrl.getText().toString().trim();
+
+        if (selectedSubject == null || newTitle.isEmpty() || newDate.isEmpty() || newPdfUrl.isEmpty()) {
+            Toast.makeText(getContext(), "Please fill all fields and provide a PDF URL", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Quiz updatedQuiz = new Quiz(selectedSubject, newTitle, newDate, newPdfUrl);
+        quizzesRef.child(editingQuizId).setValue(updatedQuiz).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(getContext(), "Quiz updated successfully", Toast.LENGTH_SHORT).show();
+                clearInputFields();
+                loadQuizzes(); // Reload quizzes after updating
+                buttonSaveQuiz.setText("Save Quiz"); // Reset button text
+            } else {
+                Log.e(TAG, "Failed to update quiz: " + task.getException().getMessage());
+                Toast.makeText(getContext(), "Failed to update quiz", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void deleteQuiz(String id) {
+        quizzesRef.child(id).removeValue().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(getContext(), "Quiz deleted successfully", Toast.LENGTH_SHORT).show();
+                loadQuizzes(); // Reload quizzes after deleting
+            } else {
+                Log.e(TAG, "Failed to delete quiz: " + task.getException().getMessage());
+                Toast.makeText(getContext(), "Failed to delete quiz", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private static class Quiz {

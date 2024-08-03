@@ -61,7 +61,7 @@ public class tests_marks_add extends Fragment {
         quizList = new ArrayList<>();
 
         // Initialize Spinner and Adapter
-        quizAdapter = new QuizAdapter(getActivity(), quizList);
+        quizAdapter = new QuizAdapter(requireContext(), quizList);
         spinnerTests.setAdapter(quizAdapter);
 
         // Load data
@@ -111,7 +111,7 @@ public class tests_marks_add extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "Failed to load students: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Failed to load students: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("tests_marks_add", "Failed to load students: " + databaseError.getMessage());
             }
         });
@@ -135,22 +135,29 @@ public class tests_marks_add extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "Failed to load quizzes: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Failed to load quizzes: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("tests_marks_add", "Failed to load quizzes: " + databaseError.getMessage());
             }
         });
     }
 
     private void addStudentView(String studentName) {
+        // Ensure getContext() is not null
+        Context context = getContext();
+        if (context == null) {
+            Log.e("tests_marks_add", "Context is null in addStudentView");
+            return;
+        }
+
         // Create a horizontal LinearLayout
-        LinearLayout studentLayout = new LinearLayout(getActivity());
+        LinearLayout studentLayout = new LinearLayout(context);
         studentLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         studentLayout.setOrientation(LinearLayout.HORIZONTAL);
 
         // Create a TextView for student name
-        TextView nameTextView = new TextView(getActivity());
+        TextView nameTextView = new TextView(context);
         nameTextView.setLayoutParams(new LinearLayout.LayoutParams(
                 0,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -159,7 +166,7 @@ public class tests_marks_add extends Fragment {
         nameTextView.setPadding(8, 8, 8, 8);
 
         // Create an EditText for marks
-        EditText marksEditText = new EditText(getActivity());
+        EditText marksEditText = new EditText(context);
         marksEditText.setLayoutParams(new LinearLayout.LayoutParams(
                 0,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -177,7 +184,7 @@ public class tests_marks_add extends Fragment {
 
     private void saveMarks() {
         if (selectedQuizId == null) {
-            Toast.makeText(getActivity(), "Please select a test", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Please select a test", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -202,11 +209,11 @@ public class tests_marks_add extends Fragment {
                     marksMap.put(studentName, marks);
                 } catch (NumberFormatException e) {
                     allMarksEntered = false;
-                    Toast.makeText(getActivity(), "Invalid marks for student: " + studentName, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Invalid marks for student: " + studentName, Toast.LENGTH_SHORT).show();
                 }
             } else {
                 allMarksEntered = false;
-                Toast.makeText(getActivity(), "Please enter marks for all students", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Please enter marks for all students", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -214,8 +221,8 @@ public class tests_marks_add extends Fragment {
         if (allMarksEntered) {
             DatabaseReference marksRef = quizzesRef.child(selectedQuizId).child("marks");
             marksRef.updateChildren(marksMap)
-                    .addOnSuccessListener(aVoid -> Toast.makeText(getActivity(), "Marks saved for test: " + selectedQuizId, Toast.LENGTH_SHORT).show())
-                    .addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to save marks: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    .addOnSuccessListener(aVoid -> Toast.makeText(requireContext(), "Marks saved for test: " + selectedQuizId, Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to save marks: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
     }
 
@@ -237,8 +244,8 @@ public class tests_marks_add extends Fragment {
                     // Get the marks EditText
                     EditText marksEditText = (EditText) studentLayout.getChildAt(1);
 
-                    // Load marks from Firebase if available
-                    Integer marks = dataSnapshot.child(studentName).getValue(Integer.class);
+                    // Load marks from Firebase and set to EditText
+                    Object marks = dataSnapshot.child(studentName).getValue();
                     if (marks != null) {
                         marksEditText.setText(String.valueOf(marks));
                     } else {
@@ -249,7 +256,7 @@ public class tests_marks_add extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "Failed to load marks: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Failed to load marks: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("tests_marks_add", "Failed to load marks: " + databaseError.getMessage());
             }
         });

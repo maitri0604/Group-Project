@@ -7,13 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,15 +38,15 @@ import java.util.UUID;
 
 public class ClassScheduleFragment extends Fragment {
 
-    private EditText roomEditText;
+    private EditText roomEditText,dayTextView, timeTextView;
     private Spinner subjectSpinner;
-    private TextView facultyNameText, dayTextView, timeTextView;
+    private TextView facultyNameText;
     private Button saveButton;
     private RecyclerView scheduleRecyclerView;
     private DatabaseReference classSchedulesRef;
     private DatabaseReference userRef;
     private DatabaseReference facultyDataRef;
-    private String currentUserName;
+    private String currentScheduleId;
     private List<String> subjectsList;
     private List<Schedule> scheduleList;
     private ScheduleAdapter scheduleAdapter;
@@ -56,8 +58,8 @@ public class ClassScheduleFragment extends Fragment {
 
         facultyNameText = view.findViewById(R.id.facultyNameText);
         subjectSpinner = view.findViewById(R.id.subjectSpinner);
-        dayTextView = view.findViewById(R.id.dayTextView);
-        timeTextView = view.findViewById(R.id.timeTextView);
+        dayTextView = view.findViewById(R.id.dayEditText);
+        timeTextView = view.findViewById(R.id.timeEditText);
         roomEditText = view.findViewById(R.id.roomEditText);
         saveButton = view.findViewById(R.id.saveButton);
         scheduleRecyclerView = view.findViewById(R.id.scheduleRecyclerView);
@@ -68,23 +70,34 @@ public class ClassScheduleFragment extends Fragment {
 
         subjectsList = new ArrayList<>();
         scheduleList = new ArrayList<>();
-        scheduleAdapter = new ScheduleAdapter(scheduleList);
+        scheduleAdapter = new ScheduleAdapter(scheduleList, new ScheduleAdapter.OnScheduleClickListener() {
+            @Override
+            public void onEditClick(Schedule schedule) {
+                populateFieldsForEdit(schedule);
+            }
 
-        // Set up RecyclerView
+            @Override
+            public void onDeleteClick(Schedule schedule) {
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Delete Schedule")
+                        .setMessage("Are you sure you want to delete this schedule?")
+                        .setPositiveButton("Yes", (dialog, which) -> deleteSchedule(schedule.getId()))
+                        .setNegativeButton("No", null)
+                        .show();
+            }
+        });
+
         scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         scheduleRecyclerView.setAdapter(scheduleAdapter);
 
-        // Set the faculty name and populate the spinner with subjects
         setFacultyName();
         populateSubjects();
 
-        // Set click listeners for date and time TextViews
         dayTextView.setOnClickListener(v -> showDatePicker());
         timeTextView.setOnClickListener(v -> showTimePicker());
 
         saveButton.setOnClickListener(v -> saveClassSchedule());
 
-        // Load class schedules
         loadClassSchedules();
 
         return view;
@@ -97,7 +110,7 @@ public class ClassScheduleFragment extends Fragment {
             userRef.child(userId).child("fullname").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    currentUserName = dataSnapshot.getValue(String.class);
+                    String currentUserName = dataSnapshot.getValue(String.class);
                     if (currentUserName != null) {
                         facultyNameText.setText(currentUserName);
                     }
@@ -146,10 +159,16 @@ public class ClassScheduleFragment extends Fragment {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, selectedYear, selectedMonth, selectedDay) -> {
-            String date = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
-            dayTextView.setText(date);
-        }, year, month, day);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    // Format month as MM
+                    String monthStr = String.format("%02d", selectedMonth + 1);
+                    // Format day as DD
+                    String dayStr = String.format("%02d", selectedDay);
+                    // Set date in YYYY-MM-DD format
+                    String date = selectedYear + "-" + monthStr + "-" + dayStr;
+                    dayTextView.setText(date);
+                }, year, month, day);
         datePickerDialog.show();
     }
 
@@ -176,24 +195,59 @@ public class ClassScheduleFragment extends Fragment {
         String room = roomEditText.getText().toString().trim();
 
         if (!facultyName.isEmpty() && !subject.isEmpty() && !day.isEmpty() && !time.isEmpty() && !room.isEmpty()) {
-            String scheduleId = UUID.randomUUID().toString(); // Generate a unique ID for the schedule
-            Map<String, Object> schedule = new HashMap<>();
-            schedule.put("faculty_name", facultyName);
-            schedule.put("subject", subject);
-            schedule.put("day", day);
-            schedule.put("time", time);
-            schedule.put("room", room);
+            if (currentScheduleId == null) {
+                // Create a new schedule
+                String scheduleId = UUID.randomUUID().toString(); // Generate a unique ID for the schedule
+                Map<String, Object> schedule = new HashMap<>();
+                schedule.put("faculty_name", facultyName);
+                schedule.put("subject", subject);
+                schedule.put("day", day);
+                schedule.put("time", time);
+                schedule.put("room", room);
 
-            classSchedulesRef.child(scheduleId).setValue(schedule)
-                    .addOnSuccessListener(aVoid -> {
-                        // Successfully saved
-                        clearFields();
-                    })
-                    .addOnFailureListener(e -> {
-                        // Failed to save
-                        e.printStackTrace();
-                    });
+                classSchedulesRef.child(scheduleId).setValue(schedule)
+                        .addOnSuccessListener(aVoid -> {
+                            // Successfully saved
+                            clearFields();
+                        })
+                        .addOnFailureListener(e -> {
+                            // Failed to save
+                            e.printStackTrace();
+                        });
+            } else {
+                // Update an existing schedule
+                Schedule updatedSchedule = new Schedule();
+                updatedSchedule.setId(currentScheduleId); // Set the ID
+                updatedSchedule.setFaculty_name(facultyName);
+                updatedSchedule.setSubject(subject);
+                updatedSchedule.setDay(day);
+                updatedSchedule.setTime(time);
+                updatedSchedule.setRoom(room);
+
+                updateSchedule(currentScheduleId, updatedSchedule);
+            }
         }
+    }
+
+    private void updateSchedule(String scheduleId, Schedule updatedSchedule) {
+        classSchedulesRef.child(scheduleId).setValue(updatedSchedule)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(getContext(), "Schedule updated successfully", Toast.LENGTH_SHORT).show();
+                    clearFields();
+                })
+                .addOnFailureListener(e -> {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Failed to update schedule", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void deleteSchedule(String scheduleId) {
+        classSchedulesRef.child(scheduleId).removeValue()
+                .addOnSuccessListener(aVoid -> Toast.makeText(getContext(), "Schedule deleted successfully", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Failed to delete schedule", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void clearFields() {
@@ -201,16 +255,20 @@ public class ClassScheduleFragment extends Fragment {
         dayTextView.setText("");
         timeTextView.setText("");
         roomEditText.setText("");
+
+        saveButton.setText("Save Schedule");
+        currentScheduleId = null;
     }
 
     private void loadClassSchedules() {
         classSchedulesRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 scheduleList.clear();
-                for (DataSnapshot scheduleSnapshot : dataSnapshot.getChildren()) {
-                    Schedule schedule = scheduleSnapshot.getValue(Schedule.class);
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Schedule schedule = snapshot.getValue(Schedule.class);
                     if (schedule != null) {
+                        schedule.setId(snapshot.getKey()); // Set ID from the key
                         scheduleList.add(schedule);
                     }
                 }
@@ -218,24 +276,41 @@ public class ClassScheduleFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 databaseError.toException().printStackTrace();
             }
         });
     }
 
-    // Schedule Model Class
-    public static class Schedule {
+    private void populateFieldsForEdit(Schedule schedule) {
+        facultyNameText.setText(schedule.getFaculty_name());
+        subjectSpinner.setSelection(subjectsList.indexOf(schedule.getSubject()));
+        dayTextView.setText(schedule.getDay());
+        timeTextView.setText(schedule.getTime());
+        roomEditText.setText(schedule.getRoom());
+
+        saveButton.setText("Update Schedule");
+        currentScheduleId = schedule.getId();
+    }
+
+    private static class Schedule {
+        private String id;
         private String faculty_name;
         private String subject;
         private String day;
         private String time;
         private String room;
 
-        // Default constructor required for calls to DataSnapshot.getValue(Schedule.class)
         public Schedule() {}
 
-        // Getters and setters
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
         public String getFaculty_name() {
             return faculty_name;
         }
@@ -277,13 +352,14 @@ public class ClassScheduleFragment extends Fragment {
         }
     }
 
-    // Schedule Adapter Class
-    public static class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> {
+    private static class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> {
 
         private final List<Schedule> scheduleList;
+        private final OnScheduleClickListener listener;
 
-        public ScheduleAdapter(List<Schedule> scheduleList) {
+        public ScheduleAdapter(List<Schedule> scheduleList, OnScheduleClickListener listener) {
             this.scheduleList = scheduleList;
+            this.listener = listener;
         }
 
         @NonNull
@@ -301,11 +377,19 @@ public class ClassScheduleFragment extends Fragment {
             holder.dayTextView.setText(schedule.getDay());
             holder.timeTextView.setText(schedule.getTime());
             holder.roomTextView.setText(schedule.getRoom());
+
+            holder.editButton.setOnClickListener(v -> listener.onEditClick(schedule));
+            holder.deleteButton.setOnClickListener(v -> listener.onDeleteClick(schedule));
         }
 
         @Override
         public int getItemCount() {
             return scheduleList.size();
+        }
+
+        public interface OnScheduleClickListener {
+            void onEditClick(Schedule schedule);
+            void onDeleteClick(Schedule schedule);
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
@@ -314,6 +398,8 @@ public class ClassScheduleFragment extends Fragment {
             TextView dayTextView;
             TextView timeTextView;
             TextView roomTextView;
+            Button editButton;
+            Button deleteButton;
 
             ViewHolder(View itemView) {
                 super(itemView);
@@ -322,6 +408,8 @@ public class ClassScheduleFragment extends Fragment {
                 dayTextView = itemView.findViewById(R.id.dayTextView);
                 timeTextView = itemView.findViewById(R.id.timeTextView);
                 roomTextView = itemView.findViewById(R.id.roomTextView);
+                editButton = itemView.findViewById(R.id.editButton);
+                deleteButton = itemView.findViewById(R.id.deleteButton);
             }
         }
     }

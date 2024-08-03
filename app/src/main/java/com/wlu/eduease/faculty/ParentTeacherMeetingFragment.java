@@ -49,6 +49,8 @@ public class ParentTeacherMeetingFragment extends Fragment {
     private MeetingAdapter meetingAdapter;
     private List<Meeting> meetingList;
 
+    private String currentMeetingId; // Track the currently selected meeting ID for updates
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_parent_teacher_meeting, container, false);
@@ -153,7 +155,6 @@ public class ParentTeacherMeetingFragment extends Fragment {
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (view, hourOfDay, minute1) -> {
             timeEditText.setText(String.format("%02d:%02d", hourOfDay, minute1));
         }, hour, minute, true);
-
         timePickerDialog.show();
     }
 
@@ -162,28 +163,35 @@ public class ParentTeacherMeetingFragment extends Fragment {
         String time = timeEditText.getText().toString();
         String roomNumber = roomEditText.getText().toString();
         String selectedSubject = subjectSpinner.getSelectedItem().toString();
-        String facultyName = facultyNameText.getText().toString(); // Get the faculty name
+        String facultyName = facultyNameText.getText().toString();
 
         if (TextUtils.isEmpty(date) || TextUtils.isEmpty(time) || TextUtils.isEmpty(roomNumber) || selectedSubject.isEmpty()) {
             Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        DatabaseReference meetingsRef = ptmDatabaseReference.push();
         HashMap<String, String> meetingData = new HashMap<>();
         meetingData.put("date", date);
         meetingData.put("time", time);
         meetingData.put("room_number", roomNumber);
         meetingData.put("subject", selectedSubject);
-        meetingData.put("faculty_name", facultyName); // Save the faculty name
+        meetingData.put("faculty_name", facultyName);
 
-        meetingsRef.setValue(meetingData).addOnCompleteListener(task -> {
+        DatabaseReference meetingRef;
+        if (currentMeetingId != null) {
+            meetingRef = ptmDatabaseReference.child(currentMeetingId);
+            saveButton.setText("Save Meeting"); // Reset button text to "Save" after update
+        } else {
+            meetingRef = ptmDatabaseReference.push();
+        }
+
+        meetingRef.setValue(meetingData).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(getContext(), "Meeting saved successfully", Toast.LENGTH_SHORT).show();
                 dateEditText.setText("");
                 timeEditText.setText("");
                 roomEditText.setText("");
-                loadMeetings(); // Refresh the list after saving
+                loadMeetings();
             } else {
                 Toast.makeText(getContext(), "Failed to save meeting", Toast.LENGTH_SHORT).show();
             }
@@ -198,6 +206,7 @@ public class ParentTeacherMeetingFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Meeting meeting = snapshot.getValue(Meeting.class);
                     if (meeting != null) {
+                        meeting.setId(snapshot.getKey()); // Set the ID of the meeting
                         meetingList.add(meeting);
                     }
                 }
@@ -211,13 +220,23 @@ public class ParentTeacherMeetingFragment extends Fragment {
         });
     }
 
-    // Define the Meeting class
+    public void populateFieldsForUpdate(Meeting meeting) {
+        dateEditText.setText(meeting.date);
+        timeEditText.setText(meeting.time);
+        roomEditText.setText(meeting.room_number);
+        subjectSpinner.setSelection(((ArrayAdapter<String>) subjectSpinner.getAdapter()).getPosition(meeting.subject));
+        facultyNameText.setText(meeting.faculty_name);
+        currentMeetingId = meeting.getId(); // Save the ID of the meeting to be updated
+        saveButton.setText("Update Meeting"); // Change button text for update
+    }
+
     public static class Meeting {
         public String date;
         public String time;
         public String room_number;
         public String subject;
-        public String faculty_name; // Add this field
+        public String faculty_name;
+        private String id; // Add this field
 
         public Meeting() {
             // Default constructor required for calls to DataSnapshot.getValue(Meeting.class)
@@ -228,11 +247,18 @@ public class ParentTeacherMeetingFragment extends Fragment {
             this.time = time;
             this.room_number = room_number;
             this.subject = subject;
-            this.faculty_name = faculty_name; // Initialize the new field
+            this.faculty_name = faculty_name;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
         }
     }
 
-    // Inline adapter class
     private class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MeetingViewHolder> {
 
         private final List<Meeting> meetings;
@@ -255,7 +281,24 @@ public class ParentTeacherMeetingFragment extends Fragment {
             holder.timeTextView.setText("Time: " + meeting.time);
             holder.roomTextView.setText("Room: " + meeting.room_number);
             holder.subjectTextView.setText("Subject: " + meeting.subject);
-            holder.facultyNameTextView.setText("Faculty: " + meeting.faculty_name); // Show faculty name
+            holder.facultyNameTextView.setText("Faculty: " + meeting.faculty_name);
+
+            holder.itemView.setOnClickListener(v -> {
+                // Populate fields for updating
+                populateFieldsForUpdate(meeting);
+            });
+
+            holder.deleteButton.setOnClickListener(v -> {
+                // Remove the meeting from the database
+                DatabaseReference meetingRef = ptmDatabaseReference.child(meeting.getId());
+                meetingRef.removeValue().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getContext(), "Meeting deleted successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "Failed to delete meeting", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
         }
 
         @Override
@@ -268,7 +311,8 @@ public class ParentTeacherMeetingFragment extends Fragment {
             public TextView timeTextView;
             public TextView roomTextView;
             public TextView subjectTextView;
-            public TextView facultyNameTextView; // Add this field
+            public TextView facultyNameTextView;
+            public Button deleteButton;
 
             public MeetingViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -276,7 +320,8 @@ public class ParentTeacherMeetingFragment extends Fragment {
                 timeTextView = itemView.findViewById(R.id.timeTextView);
                 roomTextView = itemView.findViewById(R.id.roomTextView);
                 subjectTextView = itemView.findViewById(R.id.subjectTextView);
-                facultyNameTextView = itemView.findViewById(R.id.facultyNameTextView); // Initialize the new field
+                facultyNameTextView = itemView.findViewById(R.id.facultyNameTextView);
+                deleteButton = itemView.findViewById(R.id.deleteButton);
             }
         }
     }
