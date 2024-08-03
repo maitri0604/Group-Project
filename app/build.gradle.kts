@@ -45,5 +45,9 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation ("com.google.firebase:firebase-auth:21.0.1")
-
+    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.google.code.gson:gson:2.8.6")
+    implementation("org.tensorflow:tensorflow-lite:2.10.0")
+    implementation("com.google.firebase:firebase-analytics:21.0.0")
 }
+

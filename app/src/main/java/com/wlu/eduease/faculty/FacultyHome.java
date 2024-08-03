@@ -1,5 +1,6 @@
 package com.wlu.eduease.faculty;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -34,7 +35,12 @@ public class FacultyHome extends Fragment {
         Button btnAssignments = view.findViewById(R.id.btnAssignments);
         Button btnGrades = view.findViewById(R.id.btnGrades);
         Button btnPTMSchedule = view.findViewById(R.id.btnPTMSchedule);
+        Button atRiskButton = view.findViewById(R.id.btnAtRiskStudents);
 
+        atRiskButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AtRiskStudent.class);
+            startActivity(intent);
+        });
         btnCourseMaterial.setOnClickListener(v -> {
             // Create the new fragment
             course_material courseMaterialFragment = new course_material();
