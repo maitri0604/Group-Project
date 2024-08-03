@@ -17,10 +17,7 @@ import com.wlu.eduease.R;
 
 public class StudentHome extends Fragment {
 
-    private FirebaseAuth auth;
 
-    private TextView textView;
-    private FirebaseUser user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
