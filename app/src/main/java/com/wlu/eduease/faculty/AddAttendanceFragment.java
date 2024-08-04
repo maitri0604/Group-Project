@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -58,11 +59,19 @@ public class AddAttendanceFragment extends Fragment {
         if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ||
                 calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
             Toast.makeText(getContext(), "Attendance cannot be marked on weekends.", Toast.LENGTH_SHORT).show();
-            if (getActivity() != null) {
-                getActivity().finish();
+
+            // Navigate back to the faculty_home fragment
+            if (getFragmentManager() != null) {
+                Fragment facultyHomeFragment = new FacultyHome();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, facultyHomeFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
+
             return view;
         }
+
 
         TextView dateTextView = view.findViewById(R.id.dateTextView);
         dateTextView.setText(currentDate);

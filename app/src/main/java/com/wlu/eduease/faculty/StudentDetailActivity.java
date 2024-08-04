@@ -59,7 +59,7 @@ public class StudentDetailActivity extends AppCompatActivity {
                 quizzesContainer.addView(quizView);
             }
         }
-    }
+    }   
 
     private static class MyResponse {
         private static class Student {
