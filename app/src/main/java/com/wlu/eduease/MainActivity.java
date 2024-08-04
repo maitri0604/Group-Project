@@ -109,12 +109,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.setTitle("Help");
 
         // Set the dialog content
-        String message = "Author: Your Name\n" +
-                "Activity Version: 1.0\n" +
+        String message = "Author: Rudri Jardosh\n" +
+                "Version: 1.0\n\n" +
                 "Instructions:\n" +
-                "- Use the menu icon on the left to navigate.\n" +
-                "- Access settings and logout options from the right menu icon.\n" +
-                "- Follow on-screen prompts for further actions.";
+                "\nFaculty:\n" +
+                "1. Uploading Materials, Tests, Assignments, Quizs.\n" +
+                "2. Posting Grades of Tests, Assignments, Quizs.\n" +
+                "3. Viewing Student Performance.\n\n" +
+                "Students:\n" +
+                "1. Viewing Materials, Tests, Assignments, Quizs.\n" +
+                "2. Checking Grades of Tests, Assignments, Quizs.\n" +
+                "3. Participating in Quizzes.\n\n" +
+                "Parents:\n" +
+                "1. Viewing Student Progress.\n" +
+                "2. Scheduling PTMs.\n" +
+                "3. Receiving Notifications.\n\n";
         builder.setMessage(message);
 
         // Add an OK button
