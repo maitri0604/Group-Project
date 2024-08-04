@@ -31,7 +31,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class AssignmentAddFragment extends Fragment {
+public class
+AssignmentAddFragment extends Fragment {
 
     private static final String TAG = "AssignmentAddFragment";
     private Spinner spinnerSubject;
