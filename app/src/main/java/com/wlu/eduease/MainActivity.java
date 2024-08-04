@@ -110,6 +110,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Set the dialog content
         String message = "Author: Rudri Jardosh\n" +
+                "              Perin Patel\n" +
+                "              Fenil Patel\n" +
+                "              Maitri Patel\n" +
                 "Version: 1.0\n\n" +
                 "Instructions:\n" +
                 "\nFaculty:\n" +
@@ -203,8 +206,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FacultyHome()).commit();
         } else if (itemId == R.id.nav_parent_home) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParentHome()).commit();
-        } else if (itemId == R.id.nav_settings) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
         } else if (itemId == R.id.nav_about) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
         } else if (itemId == R.id.nav_logout) {
