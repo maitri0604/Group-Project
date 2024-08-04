@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -303,14 +304,46 @@ public class test_add extends Fragment {
         });
     }
 
+    // Inside your test_add class
+    private Quiz deletedQuiz; // Store the deleted quiz data
+
     private void deleteQuiz(String id) {
-        quizzesRef.child(id).removeValue().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(getContext(), "Quiz deleted successfully", Toast.LENGTH_SHORT).show();
-                loadQuizzes(); // Reload quizzes after deleting
-            } else {
-                Log.e(TAG, "Failed to delete quiz: " + task.getException().getMessage());
-                Toast.makeText(getContext(), "Failed to delete quiz", Toast.LENGTH_SHORT).show();
+        // Fetch the quiz data before deleting
+        quizzesRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    deletedQuiz = dataSnapshot.getValue(Quiz.class); // Save the quiz data
+
+                    // Proceed with deletion
+                    quizzesRef.child(id).removeValue().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Snackbar.make(getView(), "Quiz deleted successfully", Snackbar.LENGTH_LONG)
+                                    .setAction("Undo", v -> {
+                                        // Restore the deleted quiz
+                                        if (deletedQuiz != null) {
+                                            quizzesRef.child(id).setValue(deletedQuiz).addOnCompleteListener(restoreTask -> {
+                                                if (restoreTask.isSuccessful()) {
+                                                    Toast.makeText(getContext(), "Quiz restored successfully", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(getContext(), "Failed to restore quiz", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+                                    })
+                                    .show();
+                            loadQuizzes(); // Reload quizzes after deleting
+                        } else {
+                            Log.e(TAG, "Failed to delete quiz: " + task.getException().getMessage());
+                            Toast.makeText(getContext(), "Failed to delete quiz", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "Failed to fetch quiz data: " + databaseError.getMessage());
             }
         });
     }

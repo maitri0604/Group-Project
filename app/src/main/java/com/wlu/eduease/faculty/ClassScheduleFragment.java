@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -208,10 +209,12 @@ public class ClassScheduleFragment extends Fragment {
                 classSchedulesRef.child(scheduleId).setValue(schedule)
                         .addOnSuccessListener(aVoid -> {
                             // Successfully saved
+                            showSnackbar("Schedule saved successfully");
                             clearFields();
                         })
                         .addOnFailureListener(e -> {
                             // Failed to save
+                            showSnackbar("Failed to save schedule");
                             e.printStackTrace();
                         });
             } else {
@@ -226,29 +229,39 @@ public class ClassScheduleFragment extends Fragment {
 
                 updateSchedule(currentScheduleId, updatedSchedule);
             }
+        } else {
+            showSnackbar("Please fill all the fields");
         }
     }
 
     private void updateSchedule(String scheduleId, Schedule updatedSchedule) {
         classSchedulesRef.child(scheduleId).setValue(updatedSchedule)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(getContext(), "Schedule updated successfully", Toast.LENGTH_SHORT).show();
+                    showSnackbar("Schedule updated successfully");
                     clearFields();
                 })
                 .addOnFailureListener(e -> {
+                    showSnackbar("Failed to update schedule");
                     e.printStackTrace();
-                    Toast.makeText(getContext(), "Failed to update schedule", Toast.LENGTH_SHORT).show();
                 });
     }
 
     private void deleteSchedule(String scheduleId) {
         classSchedulesRef.child(scheduleId).removeValue()
-                .addOnSuccessListener(aVoid -> Toast.makeText(getContext(), "Schedule deleted successfully", Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(aVoid -> showSnackbar("Schedule deleted successfully"))
                 .addOnFailureListener(e -> {
+                    showSnackbar("Failed to delete schedule");
                     e.printStackTrace();
-                    Toast.makeText(getContext(), "Failed to delete schedule", Toast.LENGTH_SHORT).show();
                 });
     }
+
+    private void showSnackbar(String message) {
+        View rootView = getView();
+        if (rootView != null) {
+            Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
 
     private void clearFields() {
         subjectSpinner.setSelection(0);

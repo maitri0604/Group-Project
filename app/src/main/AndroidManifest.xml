@@ -33,15 +33,18 @@
         <activity
             android:name=".user_login"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.MainActivity"></activity>
+            android:theme="@style/Theme.MainActivity">
+        </activity>
         <activity
             android:name=".user_register"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".faculty.AtRiskStudent"
             android:exported="true"
