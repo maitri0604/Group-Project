@@ -1,13 +1,9 @@
 package com.wlu.eduease.faculty;
 
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.google.gson.Gson;
 import com.wlu.eduease.R;
@@ -21,14 +17,6 @@ public class StudentDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_detail);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle("EduEase");
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
         String studentJson = getIntent().getStringExtra("student");
         Gson gson = new Gson();
         MyResponse.Student student = gson.fromJson(studentJson, MyResponse.Student.class);
@@ -36,37 +24,30 @@ public class StudentDetailActivity extends AppCompatActivity {
         TextView studentIdView = findViewById(R.id.studentId);
         TextView avgAssignmentMarksView = findViewById(R.id.avgAssignmentMarks);
         TextView avgQuizMarksView = findViewById(R.id.avgQuizMarks);
-        LinearLayout assignmentsContainer = findViewById(R.id.assignmentsContainer);
-        LinearLayout quizzesContainer = findViewById(R.id.quizzesContainer);
+        TextView assignmentsView = findViewById(R.id.assignments);
+        TextView quizzesView = findViewById(R.id.quizzes);
 
         studentIdView.setText("Student ID: " + student.student_id);
         avgAssignmentMarksView.setText("Average Assignment Marks: " + student.avg_assignment_marks);
         avgQuizMarksView.setText("Average Quiz Marks: " + student.avg_quiz_marks);
 
+        StringBuilder assignmentsInfo = new StringBuilder("Assignments:\n");
         if (student.assignments != null) {
             for (Map.Entry<String, MyResponse.Assignment> entry : student.assignments.entrySet()) {
-                TextView assignmentView = new TextView(this);
-                assignmentView.setText(entry.getKey() + ": Subject: " + entry.getValue().subject + ", Marks: " + entry.getValue().marks);
-                assignmentsContainer.addView(assignmentView);
+                assignmentsInfo.append(entry.getKey()).append(": Subject: ")
+                        .append(entry.getValue().subject).append(", Marks: ").append(entry.getValue().marks).append("\n");
             }
         }
+        assignmentsView.setText(assignmentsInfo.toString());
 
+        StringBuilder quizzesInfo = new StringBuilder("Quizzes:\n");
         if (student.quizzes != null) {
             for (Map.Entry<String, MyResponse.Quiz> entry : student.quizzes.entrySet()) {
-                TextView quizView = new TextView(this);
-                quizView.setText(entry.getKey() + ": Subject: " + entry.getValue().subject + ", Marks: " + entry.getValue().marks);
-                quizzesContainer.addView(quizView);
+                quizzesInfo.append(entry.getKey()).append(": Subject: ")
+                        .append(entry.getValue().subject).append(", Marks: ").append(entry.getValue().marks).append("\n");
             }
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        quizzesView.setText(quizzesInfo.toString());
     }
 
     private static class MyResponse {

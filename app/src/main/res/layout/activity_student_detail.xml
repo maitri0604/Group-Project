@@ -5,21 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:background="@color/brown50"
-            android:title="EduEase"
-            android:titleTextColor="@android:color/white"/>
-    </com.google.android.material.appbar.AppBarLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,9 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:layout_margin="8dp">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/studentId"
@@ -55,36 +38,19 @@
                 android:paddingBottom="8dp" />
 
             <TextView
-                android:id="@+id/assignmentsTitle"
+                android:id="@+id/assignments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:paddingBottom="4dp"
-                android:text="Assignments" />
-
-            <LinearLayout
-                android:id="@+id/assignmentsContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:textSize="16sp"
                 android:paddingBottom="8dp" />
 
             <TextView
-                android:id="@+id/quizzesTitle"
+                android:id="@+id/quizzes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:paddingBottom="4dp"
-                android:text="Quizzes" />
-
-            <LinearLayout
-                android:id="@+id/quizzesContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:textSize="16sp"
                 android:paddingBottom="8dp" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
