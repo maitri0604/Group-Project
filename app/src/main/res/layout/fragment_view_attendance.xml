@@ -5,6 +5,16 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Label TextView -->
+    <TextView
+        android:id="@+id/labelAttendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Attendance"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
