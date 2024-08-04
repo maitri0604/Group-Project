@@ -37,7 +37,9 @@
             android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_margin="8dp"
-            android:text="@string/test_schedule" />
+            android:text="@string/test_schedule"
+            android:drawableLeft="@drawable/test_s"
+            android:drawablePadding="8dp"/>
 
         <Button
             android:id="@+id/btnClassSchedule"
@@ -46,7 +48,8 @@
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:text="@string/class_schedule"
-            android:layout_margin="8dp"/>
+            android:layout_margin="8dp"
+            android:drawableLeft="@drawable/class_s"/>
 
         <Button
             android:id="@+id/btnCourseMaterial"
@@ -55,7 +58,8 @@
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:text="@string/course_material"
-            android:layout_margin="8dp"/>
+            android:layout_margin="8dp"
+            android:drawableLeft="@drawable/courses"/>
 
         <Button
             android:id="@+id/btnAssignments"
@@ -64,7 +68,10 @@
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:text="@string/assignments"
-            android:layout_margin="8dp"/>
+            android:layout_margin="8dp"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:drawableLeft="@drawable/add_assign"/>
     </GridLayout>
 
     <Button
@@ -74,7 +81,8 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/grades"
-        android:layout_margin="8dp"/>
+        android:layout_margin="8dp"
+        android:drawableLeft="@drawable/grades"/>
     <Button
         android:id="@+id/viewAttendanceButton"
         android:layout_width="match_parent"
